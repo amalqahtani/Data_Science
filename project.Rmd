@@ -45,7 +45,7 @@ loadPkg("kableExtra")
 
 # Introduction
 
-Team A are the following members: Amal Alqahtani, Peng Jiaxiang, Elahi	Naureen, and Mu Xinya. You may find our work over on [GitHub](https://github.com/amalqahtani/Data_Science).
+Team A are the following members: Amal Alqahtani, Jiaxiang Peng, Naureen Elahi, and Xinya Mu. You may find our work over on [GitHub](https://github.com/amalqahtani/Data_Science).
 
 Coronavirus disease-19 (COVID-19) has spread rapidly around the world, and many risk factors have been hypothesized to affect case and death rates. We felt that a relevant discussion to have would be `What are the most regions with the highest number of deaths`? What can we say about patient demographics? Does race considered a significant risk factor for increased Covid19 incidence in the United States?' Have there been any general trends amongst the health conditions? 
 These questions are all suited to EDA, and with these questions in mind, we want to see if we could find data on Covid19 that would be readily available for us to analyze. Eventually, our question morphed into the following: **What are the factors (i.e. patient demographics, social determinants of health, environmental variables, underlying health conditions, country of origin) affecting COVID-19 numbers of cases and death rate among different geographical locations in US?** 
