@@ -48,7 +48,8 @@ loadPkg("kableExtra")
 Team A are the following members: Amal Alqahtani, Peng Jiaxiang, Elahi	Naureen, and Mu Xinya. You may find our work over on [GitHub](https://github.com/amalqahtani/Data_Science).
 
 Coronavirus disease-19 (COVID-19) has spread rapidly around the world, and many risk factors have been hypothesized to affect case and death rates. We felt that a relevant discussion to have would be `What are the most regions with the highest number of deaths`? What can we say about patient demographics? Does race considered a significant risk factor for increased Covid19 incidence in the United States?' Have there been any general trends amongst the health conditions? 
-These questions are all suited to EDA, and with these questions in mind, we want to see if we could find data on Covid19 that would be readily available for us to analyze. Eventually, our question morphed into the following: **are there any specific factors (i.e. patient demographics, social determinants of health, environmental variables, underlying health conditions, country of origin) that could be used to describe the factors affecting COVID-19 Case and Death Rate in the U.S. in general?** 
+These questions are all suited to EDA, and with these questions in mind, we want to see if we could find data on Covid19 that would be readily available for us to analyze. Eventually, our question morphed into the following: **What are the factors (i.e. patient demographics, social determinants of health, environmental variables, underlying health conditions, country of origin) affecting COVID-19 numbers of cases and death rate among different geographical locations in US?** 
+
 
 We were able to find a dataset called `Covid-19-Dataset` on Github over here: [https://github.com/johndurbin93/Covid-19-Dataset](https://github.com/johndurbin93/Covid-19-Dataset). This dataset includes COVID-19 confirmed case number and death number through April 14, 2020  which were obtained for each U.S. county from the Center for Systems Science and Engineering (CSSE) Coronavirus Resource Center at Johns Hopkins University. Race demographics for counties was obtained from the County Health Rankings and Roadmaps Program database. Daily temperature data for counties was obtained from the National Oceanic and Atmospheric Administration. This data was compiled by a group of reserchers. 
 
@@ -64,3 +65,81 @@ The report is organized as follows:
 8. Have there been any ....... trends among patient over the times? (Trends Over Time)
 9. Are patient a certain race? (race Data)
 10. Discussion And Conclusion
+
+
+# Summary of Dataset
+
+The data looks like the following:
+
+```{r input_data}
+library("readxl")
+data <- read_excel("Counties_Dataset.xlsx")
+summary(data)
+str(data)
+```
+
+The Covid19 data has `r ncol(data)` columns and `r nrow(data)` rows/entries, for a total of `r ncol(data)*nrow(data)` individual data points. The variables are the following:
+
+1. Province
+2. State
+3. Tests
+4. Total cases
+5. Deaths
+6. Population (for demographic %'s)
+7. % less than 18 years of age 
+8. % 65 and over
+9. % Black
+10. % American Indian & Alaska Native
+11. % Asian
+12. % Native Hawaiian/Other Pacific Islander
+13. % Hispanic
+14. % Non-Hispanic White
+15. % Not Proficient in English
+16. % Female
+17. % Rural
+18. Sleep <7 Hours_Percent
+19. Sleep <7 Hours_CI_Low	
+20. Sleep <7 Hours_CI_High	
+21. Diabetes Total Percentage	
+22. Diabetes Male Percentage
+23. Diabetes Female Percentage
+24. Coronary Heart Disease Death Rate per 100,000, All Ages , All Races/Ethnicities, Both Genders, 2014-2016
+25. Hypertension Death Rate per 100,000 (any mention), 35+, All Races/Ethnicities, Both Genders, 2014-2016	
+26. Obesity, Age-Adjusted Percentage, 20+. 2015	
+27. % Fair or Poor Health	
+28. Average Number of Physically Unhealthy Days
+29. Average Number of Mentally Unhealthy Days	
+30. % Low Birthweight
+31. % Smokers (adults)
+32. % Adults with Obesity	
+33. Food Environment Index	
+34. % Physically Inactive	
+35. % With Access to Exercise Opportunities	
+36. % Excessive Drinking	
+37. % Uninsured	
+38. Preventable Hospitalization Rate (Preventable hospital stays)	
+39. % With Annual Mammogram	
+40. % Flu Vaccinated	
+41. Chronic Respiratory Disease: mortality rate per 100K (2014)	
+42. Liver Disease: crude mortality rate per 100K (1999-2018)	
+43. Liver Disease: % of Total Deaths (1999-2018)	
+44. Liver Disease: crude mortality rate per 100K (2018)	
+45. Liver Disease: % of Total Deaths (2018)
+46. Avg Temp Peak Growth-10 Rate	
+47. Avg Temp 10 Before First-Current	
+48. Avg Temp First-Current
+
+
+
+To prepare our data for EDA we dropped the .........: ........ NAs were also removed. 
+
+# Descriptive Statistics
+
+## Patient Demographics (Impact of Race)
+## Underlying Health Conditions
+## Impact of Temperature
+## Social Determinants of Health???
+## Environmental Variables??
+
+# Normality Test of Numerical Columns
+
