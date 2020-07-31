@@ -73,67 +73,70 @@ The data looks like the following:
 
 ```{r input_data}
 library("readxl")
-data <- read_excel("Counties_Dataset.xlsx")
+data <- read_excel("dataset_amal.xlsx")
 summary(data)
 str(data)
+names(data)[5] <- c("total_cases")
+
+#Print out the first 5 and the last 3 rows of the dataframe.**  
+head(data, 5)
+tail(data, 3)
+
 ```
 
 The Covid19 data has `r ncol(data)` columns and `r nrow(data)` rows/entries, for a total of `r ncol(data)*nrow(data)` individual data points. The variables are the following:
 
 1. Province
-2.
-3. 
-4. Total cases
-5. Deaths
-6. Population (for demographic %'s)
-7. % less than 18 years of age 
-8. % 65 and over
-9. % Black
-10. % American Indian & Alaska Native
-11. % Asian
-12. % Native Hawaiian/Other Pacific Islander
-13. % Hispanic
-14. % Non-Hispanic White
-15. % Not Proficient in English
-16. % Female
-17. 
-18. Sleep <7 Hours_Percent
-19. Sleep <7 Hours_CI_Low	
-20. Sleep <7 Hours_CI_High	
-21. Diabetes Total Percentage	
-22. Diabetes Male Percentage
-23. Diabetes Female Percentage
-24. Coronary Heart Disease Death Rate per 100,000, All Ages , All Races/Ethnicities, Both Genders, 2014-2016
-25. Hypertension Death Rate per 100,000 (any mention), 35+, All Races/Ethnicities, Both Genders, 2014-2016	
-26. Obesity, Age-Adjusted Percentage, 20+. 2015	
-27. % Fair or Poor Health	
-28. Average Number of Physically Unhealthy Days
-29. Average Number of Mentally Unhealthy Days	
-30. % Low Birthweight
-31. % Smokers (adults)
-32. % Adults with Obesity	
-33. Food Environment Index	
-34. % Physically Inactive	
-35. % With Access to Exercise Opportunities	
-36. % Excessive Drinking	
-37. % Uninsured	
-38. Preventable Hospitalization Rate (Preventable hospital stays)	
-39. % With Annual Mammogram	
-40. % Flu Vaccinated	
-41. Chronic Respiratory Disease: mortality rate per 100K (2014)	
-42. Liver Disease: crude mortality rate per 100K (1999-2018)	
-43. Liver Disease: % of Total Deaths (1999-2018)	
-44. Liver Disease: crude mortality rate per 100K (2018)	
-45. Liver Disease: % of Total Deaths (2018)
-46. Avg Temp Peak Growth-10 Rate	
-47. Avg Temp 10 Before First-Current	
-48. Avg Temp First-Current
+2. State
+3. State Code
+4. Tests
+5. Total cases
+6. Deaths
+7. Population (for demographic %'s)
+8. % less than 18 years of age 
+9. % 65 and over
+10. % Black
+11. % American Indian & Alaska Native
+12. % Asian
+13. % Native Hawaiian/Other Pacific Islander
+14. % Hispanic
+15. % Non-Hispanic White
+16. % Not Proficient in English
+17. % Female
+18. No Cases	
+19. No Stay At Home Order	
+20. Stay At Home Order After First Case
 
 
 
-To prepare our data for EDA we dropped the .........: ........ NAs were also removed. 
+To prepare our data for EDA we clean the dataset and remove all NAs. 
+```{r remove_NAs}
+#Print the number of NA values per each columns 
+#colSums(is.na(data))
+#Which col contains NA values? 
+#colnames(data)[!complete.cases(t(data))]
+
+#Drops rows containing missing values in any variable:
+data_noNA = na.omit(data)
+data_noNA
+```
 
 # Descriptive Statistics
+We can look at the top 15 Province by number of deaths in these cities. We can show this in a bar chart.
+
+```{r top_ten, echo=F}
+ library(ggplot2)
+ library(dplyr)
+  top_n(data_noNA, n=15, Deaths) %>%
+          ggplot(., aes(x=reorder(Province, -Deaths), y=Deaths, color=Province, fill=Province)) +
+  geom_bar(aes(y=Deaths), stat="identity") + 
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, size = 12, hjust = 1), 
+        axis.text.y = element_text(vjust = 1, size = 12, hjust = 1), 
+        panel.border = element_rect(colour = "black", fill=NA, size=1)) + 
+  labs(title="Barchart of Top 15 Provinces (determined by number of Deaths)", x="Provinces", y="Number of Deaths")   
+  
+```
 
 ## Patient Demographics (Impact of Race)
 ## Underlying Health Conditions

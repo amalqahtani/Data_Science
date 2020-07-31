@@ -5,3 +5,5 @@ ggplot2
 gridExtra
 kableExtra
 readxl
+tidyr
+dplyr
