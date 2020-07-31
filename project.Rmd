@@ -81,8 +81,8 @@ str(data)
 The Covid19 data has `r ncol(data)` columns and `r nrow(data)` rows/entries, for a total of `r ncol(data)*nrow(data)` individual data points. The variables are the following:
 
 1. Province
-2. State
-3. Tests
+2.
+3. 
 4. Total cases
 5. Deaths
 6. Population (for demographic %'s)
@@ -96,7 +96,7 @@ The Covid19 data has `r ncol(data)` columns and `r nrow(data)` rows/entries, for
 14. % Non-Hispanic White
 15. % Not Proficient in English
 16. % Female
-17. % Rural
+17. 
 18. Sleep <7 Hours_Percent
 19. Sleep <7 Hours_CI_Low	
 20. Sleep <7 Hours_CI_High	
