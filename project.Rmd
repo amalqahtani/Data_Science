@@ -43,7 +43,7 @@ loadPkg("kableExtra")
 
 ![](covid19.png)
 
-# Introduction
+# Chapter 1: Introduction
 
 Team A are the following members: Amal Alqahtani, Jiaxiang Peng, Naureen Elahi, and Xinya Mu. You may find our work over on [GitHub](https://github.com/amalqahtani/Data_Science).
 
@@ -67,24 +67,28 @@ The report is organized as follows:
 10. Discussion And Conclusion
 
 
-# Summary of Dataset
+# Chapter 2: Description of the Data
+## Source Data
+
 
 The data looks like the following:
 
 ```{r input_data}
 library("readxl")
-data <- read_excel("dataset_amal.xlsx")
-summary(data)
+data <- read_excel("Counties_Dataset.xlsx")
+#summary(data)
 str(data)
-names(data)[5] <- c("total_cases")
-
+#names(data)[8:] <- c("total_cases","deaths")
+cols <- c(1:2, 7:19)
+small_df=data[,cols]
+#small_df
 #Print out the first 5 and the last 3 rows of the dataframe.**  
-head(data, 5)
-tail(data, 3)
+#head(data, 5)
+#tail(data, 3)
 
 ```
 
-The Covid19 data has `r ncol(data)` columns and `r nrow(data)` rows/entries, for a total of `r ncol(data)*nrow(data)` individual data points. The variables are the following:
+The Covid19 dataset has `r ncol(data)` columns and `r nrow(data)` rows/entries, for a total of `r ncol(data)*nrow(data)` individual data points. Out of `r ncol(data)`, we select the following variables to do EDA:
 
 1. Province
 2. State
@@ -117,20 +121,44 @@ To prepare our data for EDA we clean the dataset and remove all NAs.
 #colnames(data)[!complete.cases(t(data))]
 
 #Drops rows containing missing values in any variable:
-data_noNA = na.omit(data)
-data_noNA
+data_noNA = na.omit(small_df)
+str(data_noNA)
 ```
 
-# Descriptive Statistics
-We can look at the top 15 Province by number of deaths in these cities. We can show this in a bar chart.
+# Chapter 3:  Independent Variables EDA
+
+## United States COVID-19 Cases and Deaths by Provinces (Cities)
 
 
-```{r top_15, echo=F}
+### What are the top 15 Provinces based on the number of cases?
+
+The following bar chart shows the top 15 cities by number of Covid19 cases. 
+
+```{r top_10_cases, echo=F}
  library(ggplot2)
  library(dplyr)
-  top_n(data_noNA, n=15, Deaths) %>%
-          ggplot(., aes(x=reorder(Province, -Deaths), y=Deaths, color=Province, fill=Province)) +
-  geom_bar(aes(y=Deaths), stat="identity") + 
+  top_n(data_noNA, n=15, total_cases) %>%
+          ggplot(., aes(x=reorder(Province, -total_cases), y=total_cases, color=Province, fill=Province)) +
+  geom_bar(aes(y=total_cases), stat="identity") + 
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, size = 12, hjust = 1), 
+        axis.text.y = element_text(vjust = 1, size = 12, hjust = 1), 
+        panel.border = element_rect(colour = "black", fill=NA, size=1)) + 
+  labs(title="Barchart of Top 15 Provinces (determined by number of Cases)", x="Province", y="Number of Cases")   
+  
+```
+
+
+### What are the top 15 Provinces based on the number of deaths?
+
+The following bar chart shows the top 15 cities by number of deaths. 
+
+```{r top_15_deaths, echo=F}
+ library(ggplot2)
+ library(dplyr)
+  top_n(data_noNA, n=15, deaths) %>%
+          ggplot(., aes(x=reorder(Province, -deaths), y=deaths, color=Province, fill=Province)) +
+  geom_bar(aes(y=deaths), stat="identity") + 
   theme_minimal() + 
   theme(axis.text.x = element_text(angle = 90, vjust = 1, size = 12, hjust = 1), 
         axis.text.y = element_text(vjust = 1, size = 12, hjust = 1), 
@@ -139,11 +167,20 @@ We can look at the top 15 Province by number of deaths in these cities. We can s
   
 ```
 
-## Patient Demographics (Impact of Race)
+
+
+### Which cities had the greatest % of population of people with poor health?
+
+## Patient Demographics
+### Which race is the majority of the sample?
+### Which race has the most average death rate and total cases?
+
+
+## Stay at home policy in each province
+### Is the stay at home policy related to the first case coming time?
+### Is the stay at home policy after the first case related to the people inflected number?
+
 ## Underlying Health Conditions
 ## Impact of Temperature
-## Social Determinants of Health???
-## Environmental Variables??
 
-# Normality Test of Numerical Columns
 
