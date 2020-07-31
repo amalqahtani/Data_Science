@@ -79,9 +79,10 @@ data <- read_excel("Counties_Dataset.xlsx")
 #summary(data)
 str(data)
 #names(data)[8:] <- c("total_cases","deaths")
-cols <- c(1:2, 7:19)
+cols <- c(1:2, 7:19, 56)
 small_df=data[,cols]
-#small_df
+names(small_df)[16] <- c("poor_health")
+small_df
 #Print out the first 5 and the last 3 rows of the dataframe.**  
 #head(data, 5)
 #tail(data, 3)
@@ -167,7 +168,16 @@ The following bar chart shows the top 15 cities by number of deaths.
   
 ```
 
+### What is the average cases for each State?
 
+```{r rop avg cases, echo=F}
+print(aggregate(total_cases~State,data=data_noNA,FUN=mean))
+```
+### What is the average deaths for each State?
+
+```{r rop avg deaths, echo=F}
+print(aggregate(deaths~State,data=data_noNA,FUN=mean))
+```
 
 ### Which cities had the greatest % of population of people with poor health?
 
