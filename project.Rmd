@@ -194,3 +194,14 @@ print(aggregate(deaths~State,data=data_noNA,FUN=mean))
 ## Impact of Temperature
 
 
+# Chapter 4: Independent Variables EDA: Boxplots, Scatterplots, ANOVA, & Chi-Square
+## SMART Question:
+## SMART Question:
+## SMART Question:
+
+# Chapter 5: Linear Regression Model
+## SMART Question: What factors influence the death the most?
+
+# Chapter 6: Conclusion
+
+
