@@ -2643,16 +2643,12 @@ $(document).ready(function () {
 <p>We were able to find a dataset called <code>Covid-19-Dataset</code> on Github over here: <a href="https://github.com/johndurbin93/Covid-19-Dataset">https://github.com/johndurbin93/Covid-19-Dataset</a>. This dataset includes COVID-19 confirmed case number and death number through April 14, 2020 which were obtained for each U.S. county from the Center for Systems Science and Engineering (CSSE) Coronavirus Resource Center at Johns Hopkins University. Race demographics for counties was obtained from the County Health Rankings and Roadmaps Program database. Daily temperature data for counties was obtained from the National Oceanic and Atmospheric Administration. This data was compiled by a group of reserchers.</p>
 <p>The report is organized as follows:</p>
 <ol style="list-style-type: decimal">
-<li>Summary of Dataset</li>
-<li>Description of Data</li>
-<li>What are the patient demographics? (demographics Data)</li>
-<li>Where do …… come from? or What are the most regions with the highest number of deaths? (country of origin Data)</li>
-<li>What are the social determinants of health? (social determinants of health Data)</li>
-<li>Environmental variables Data Goes Here?</li>
-<li>Are there any common underlying health conditions? (health conditions Data)</li>
-<li>Have there been any ……. trends among patient over the times? (Trends Over Time)</li>
-<li>Are patient a certain race? (race Data)</li>
-<li>Discussion And Conclusion</li>
+<li>Description of the Data (explanation of the dataset and its variables),</li>
+<li>Demographics Data of the patients</li>
+<li>Independent Variables EDA: Slicing the Data for an Overview</li>
+<li>Independent Variables EDA: Boxplots, Scatterplots, ANOVA, &amp; Chi-Square</li>
+<li>Linear Regression Model</li>
+<li>Conclusion</li>
 </ol>
 </div>
 <div id="chapter-2-description-of-the-data" class="section level1">
@@ -2909,11 +2905,14 @@ $(document).ready(function () {
 </div>
 <div id="patient-demographics" class="section level2">
 <h2><span class="header-section-number">3.2</span> Patient Demographics</h2>
-<div id="which-race-is-the-majority-of-the-sample" class="section level3">
-<h3><span class="header-section-number">3.2.1</span> Which race is the majority of the sample?</h3>
+<div id="what-are-the-patient-demographics" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> What are the patient demographics?</h3>
+</div>
+<div id="which-race-is-the-majority-of-the-sample-are-patient-from-a-certain-race" class="section level3">
+<h3><span class="header-section-number">3.2.2</span> Which race is the majority of the sample? Are patient from a certain race?</h3>
 </div>
 <div id="which-race-has-the-most-average-death-rate-and-total-cases" class="section level3">
-<h3><span class="header-section-number">3.2.2</span> Which race has the most average death rate and total cases?</h3>
+<h3><span class="header-section-number">3.2.3</span> Which race has the most average death rate and total cases?</h3>
 </div>
 </div>
 <div id="stay-at-home-policy-in-each-province" class="section level2">
@@ -2927,6 +2926,9 @@ $(document).ready(function () {
 </div>
 <div id="underlying-health-conditions" class="section level2">
 <h2><span class="header-section-number">3.4</span> Underlying Health Conditions</h2>
+<div id="are-there-any-common-underlying-health-conditions" class="section level3">
+<h3><span class="header-section-number">3.4.1</span> Are there any common underlying health conditions?</h3>
+</div>
 </div>
 <div id="impact-of-temperature" class="section level2">
 <h2><span class="header-section-number">3.5</span> Impact of Temperature</h2>

@@ -55,16 +55,12 @@ We were able to find a dataset called `Covid-19-Dataset` on Github over here: [h
 
 The report is organized as follows:
 
-1. Summary of Dataset
-2. Description of Data
-3. What are the patient demographics? (demographics Data)
-4. Where do ...... come from? or What are the most regions with the highest number of deaths? (country of origin Data)
-5. What are the social determinants of health? (social determinants of health Data)
-6. Environmental variables Data Goes Here?
-7. Are there any common underlying health conditions? (health conditions Data)
-8. Have there been any ....... trends among patient over the times? (Trends Over Time)
-9. Are patient a certain race? (race Data)
-10. Discussion And Conclusion
+1. Description of the Data (explanation of the dataset and its variables),
+2. Demographics Data of the patients
+3. Independent Variables EDA: Slicing the Data for an Overview
+4. Independent Variables EDA: Boxplots, Scatterplots, ANOVA, & Chi-Square
+5. Linear Regression Model
+6. Conclusion
 
 
 # Chapter 2: Description of the Data
@@ -182,7 +178,8 @@ print(aggregate(deaths~State,data=data_noNA,FUN=mean))
 ### Which cities had the greatest % of population of people with poor health?
 
 ## Patient Demographics
-### Which race is the majority of the sample?
+### What are the patient demographics?
+### Which race is the majority of the sample? Are patient from a certain race?
 ### Which race has the most average death rate and total cases?
 
 
@@ -191,6 +188,8 @@ print(aggregate(deaths~State,data=data_noNA,FUN=mean))
 ### Is the stay at home policy after the first case related to the people inflected number?
 
 ## Underlying Health Conditions
+###  Are there any common underlying health conditions?
+
 ## Impact of Temperature
 
 
