@@ -7,3 +7,9 @@ kableExtra
 readxl
 tidyr
 dplyr
+xtable
+stringi
+lattice
+DMwR
+corrplot
+plotly
