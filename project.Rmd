@@ -390,7 +390,7 @@ From the first to the third level, the more total cases, the larger the average 
 
 # Chapter 6: LASSO & Ridge Regression
 
-We convert the two variables Presence of Drinking Water Violation and Stay At Home Order After First Case into categorical variables. Then began to fit LASSO regression and ridge regression. We normalize the data, then split the data into training and test set, so that we can estimate test errors. The split will be used here for Lasso and later for Ridge regression. 
+We convert the two variables Presence of Drinking Water Violation and Stay At Home Order After First Case into categorical variables. Then began to fit LASSO regression and ridge regression. We normalize the data, then split the data into training and test set, so that we can estimate test errors. The split will be used here for Lasso and later for Ridge regression. For brevity, we selected 34 variables for the following analysis.
 
 ## LASSO Regression
 
