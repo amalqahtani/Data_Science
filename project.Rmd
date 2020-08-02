@@ -41,6 +41,92 @@ loadPkg("gridExtra")
 loadPkg("kableExtra")
 ```
 
+```{r xkablesummary}
+loadPkg("xtable")
+loadPkg("kableExtra")
+loadPkg("stringi")
+
+xkabledply = function(modelsmmrytable, title="Table", digits = 4, pos="left", bso="striped", wide=FALSE) { 
+  #' Combining base::summary, xtable, and kableExtra, to easily display model summary. 
+  #' wrapper for the base::summary function on model objects
+  #' Can also use as head for better display
+  #' ELo 202004 GWU DATS
+  #' version 1.2
+  #' @param modelsmmrytable This can be a generic table, a model object such as lm(), or the summary of a model object summary(lm()) 
+  #' @param title Title of table. 
+  #' @param digits Number of digits to display
+  #' @param pos Position of table, c("left","center","right") 
+  #' @param bso bootstrap_options = c("basic", "striped", "bordered", "hover", "condensed", "responsive")
+  #' @param wide print table in long (FALSE) format or wide (TRUE) format
+  #' @return HTML table for display
+  #' @examples
+  #' library("xtable")
+  #' library("kableExtra")
+  #' xkabledply( df, title="Table testing", pos="left", bso="hover" )
+  #' xkabledply( ISLR::Hitters[1:5,] )
+  if (wide) { modelsmmrytable <- t(modelsmmrytable) }
+  modelsmmrytable %>%
+    xtable() %>% 
+    kable(caption = title, digits = digits) %>%
+    kable_styling(bootstrap_options = bso, full_width = FALSE, position = pos)
+}
+
+xkabledplyhead = function(df, rows=5, title="Head", digits = 4, pos="left", bso="striped") { 
+  xkabledply(df[1:rows, ], title, digits, pos, bso, wide=FALSE)
+}
+
+xkabledplytail = function(df, rows=5, title="Tail", digits = 4, pos="left", bso="striped") { 
+  trows = nrow(df)
+  xkabledply(df[ (trows-rows+1) : trows, ], title, digits, pos, bso, wide=FALSE)
+}
+
+xkablesummary = function(df, title="Table: Statistics summary.", digits = 4, pos="left", bso="striped") { 
+  #' Combining base::summary, xtable, and kableExtra, to easily display numeric variable summary of dataframes. 
+  #' ELo 202004 GWU DATS
+  #' version 1.2
+  #' @param df The dataframe.
+  #' @param title Title of table. 
+  #' @param digits Number of digits to display
+  #' @param pos Position of table, c("left","center","right") 
+  #' @param bso bootstrap_options = c("basic", "striped", "bordered", "hover", "condensed", "responsive")
+  #' @return The HTML summary table for display, or for knitr to process into other formats 
+  #' @examples
+  #' xkablesummary( faraway::ozone )
+  #' xkablesummary( ISLR::Hitters, title="Five number summary", pos="left", bso="hover"  )
+  
+  s = summary(df) %>%
+    apply( 2, function(x) stringr::str_remove_all(x,c("Min.\\s*:\\s*","1st Qu.\\s*:\\s*","Median\\s*:\\s*","Mean\\s*:\\s*","3rd Qu.\\s*:\\s*","Max.\\s*:\\s*")) ) %>% # replace all leading words
+    apply( 2, function(x) stringr::str_trim(x, "right")) # trim trailing spaces left
+  
+  colnames(s) <- stringr::str_trim(colnames(s))
+  
+  if ( dim(s)[1] ==6 ) { rownames(s) <- c('Min','Q1','Median','Mean','Q3','Max') 
+  } else if ( dim(s)[1] ==7 ) { rownames(s) <- c('Min','Q1','Median','Mean','Q3','Max','NA') }
+  
+  xkabledply(s, title=title, digits = digits, pos=pos, bso=bso )
+}
+
+xkablevif = function(model, title="VIFs of the model", digits = 3, pos="left", bso="striped", wide=TRUE) { 
+  #' Combining faraway::vif, xtable, and kableExtra, to easily display numeric summary of VIFs for a model. 
+  #' ELo 202004 GWU DATS
+  #' version 1.2
+  #' @param model The lm or compatible model object.
+  #' @param title Title of table. 
+  #' @param digits Number of digits to display
+  #' @param pos Position of table, c("left","center","right") 
+  #' @param bso bootstrap_options = c("basic", "striped", "bordered", "hover", "condensed", "responsive")
+  #' @param wide print table in long (FALSE) format or wide (TRUE) format
+  #' @return The HTML summary table of the VIFs for a model for display, or for knitr to process into other formats 
+  #' @examples
+  #' xkablevif( lm(Salary~Hits+RBI, data=ISLR::Hitters), wide=T )
+  
+  vifs = table( names(model$coefficients)[2:length(model$coefficients)] ) # remove intercept to set column names
+  vifs[] = faraway::vif(model) # set the values
+  if (wide) { vifs <- t(vifs) }
+  xkabledply( vifs, title=title, digits = digits, pos=pos, bso=bso )
+}
+```
+
 ![](covid19.png)
 
 # Chapter 1: Introduction
@@ -107,7 +193,8 @@ The Covid19 dataset has `r ncol(data)` columns and `r nrow(data)` rows/entries, 
 18. No Cases	
 19. No Stay At Home Order	
 20. Stay At Home Order After First Case
-
+21. Percentage Living in Poverty
+22. Social Association Rate
 
 
 To prepare our data for EDA we clean the dataset and remove all NAs. 
@@ -179,9 +266,35 @@ print(aggregate(deaths~State,data=data_noNA,FUN=mean))
 
 ## Patient Demographics
 ### What are the patient demographics?
-### Which race is the majority of the sample? Are patient from a certain race?
-### Which race has the most average death rate and total cases?
+```{r}
+getwd()
+df=data.frame(read.csv("V1.csv", header = TRUE))
+df <- subset(df[,-c(1,28)])
+colnames(df) <- c("TC","death","Population","young","old","black","AIAN","Asian","NH","Hispanic","NHW","Female","Rural","Population.Density","Housing.Density","Sunlight","GDP","Poverty","Unemployed","Children.Poverty","Income.Inequality","Social","PM2.5","Water","SHP","HO","HIF")
+df$Water=as.factor(df$Water)
 
+df$Poverty=as.numeric(df$Poverty)
+# str(df)
+
+loadPkg("DMwR")
+df2=centralImputation(df) #Fill in missing values
+# sum(is.na(df2)) #Now there are no missing values
+
+xkablesummary(df2[,c(1,3,4,5,6,7,8,9,10,11,12,18,22)])
+```
+
+From the average of the output results, we can see that the average proportion of teenagers under the age of 18 is 22.1%, and the average proportion of people over 65 is 19.3%. The largest number of all races is Non-Hispanic White, with an average proportion of 76.2. The average proportion of women is 49.9, the average proportion of the poor is 15.9%, and the average of the Social Association Rate is 11.6.
+We divide the data into four levels according to total cases.
+
+### Which race is the majority of the sample?
+```{r}
+racemean = data.frame(Race.ratio= c(8.8,2.4,1.5,0.1,9.6,76.2), legend= c('Black','American Indian & Alaska Native','Asian','Native Hawaiian/Other Pacific Islander','Hispanic','Non-Hispanic White'))
+p = ggplot(racemean, aes(x = "", y =Race.ratio, fill =legend)) + 
+  geom_bar(stat = "identity", width = 1) +  
+  coord_polar(theta = "y")   
+p
+```
+According to the average value, we get a pie chart of race proportions, from which we can see the overall proportions of different races. In the following, we will study the proportion of which race is related to the number of confirmed cases and the number of deaths.
 
 ## Stay at home policy in each province
 ### Is the stay at home policy related to the first case coming time?
@@ -194,6 +307,60 @@ print(aggregate(deaths~State,data=data_noNA,FUN=mean))
 
 
 # Chapter 4: Independent Variables EDA: Boxplots, Scatterplots, ANOVA, & Chi-Square
+
+```{r}
+#sum(is.na(df2$TC))
+
+break1=fivenum(df2$TC)
+break1
+labels = c("0-2", "2-9", "9-39", "39-110465")
+rank=cut(df2$TC,break1,labels,ordered_result = T)
+
+shapiro.test(df2$TC)
+bartlett.test(TC ~ rank, data=df2)
+```
+The Shapiro-Wilk test is used to test whether the data conforms to the normal distribution.
+H0: The sample data is not significantly different from the normal distribution
+H1: The sample data is significantly different from the normal distribution
+The p-value is less than 0.05, the null hypothesis is rejected, and the total cases do not conform to the normal distribution.
+
+Test for homogeneity of variance
+H0: The variances of the groups are not significantly different
+H1: The variances of several groups are significantly different
+The result shows that the p value is less than 0.05, rejecting the null hypothesis, and total cases do not meet the homogeneity of variance.
+
+## SMART Question: The proportion of which race is related to the number of confirmed cases and deaths
+```{r}
+race=subset(df2[,c(1,2,6,7,8,9,10,11)])
+loadPkg("corrplot")
+cor(race)
+corrplot.mixed(cor(race))
+```
+First, let's look at the relationship between the total number of cases and race. It can be seen from the correlation coefficient graph that the positive correlation coefficient between total cases and Asians is the largest, which indicates that the higher the proportion of Asians, the more total cases, and Asian infections may be more serious. The other two races with higher correlation coefficients with TC are Hispanics and blacks. The correlation coefficient between total cases and non-Hispanic whites is negative, indicating that the higher the proportion of this race, the fewer the number of people diagnosed with COVID-19.
+
+Second, we can see the relationship between the number of deaths and race, and the results are consistent with the above results.
+
+## SMART Question: Are the total cases related to age?
+```{r boxplot age&gender, echo=FALSE}
+loadPkg("plotly")
+ggplotly(ggplotly(ggplot(df2, aes(x=rank, y=old, fill=rank)) + geom_boxplot() + scale_fill_brewer(palette="Spectral") + ggtitle("Proportion of elderly over 65 vs. Total cases") + ylab("Proportion of elderly over 65") + xlab("Total cases") +  theme(plot.title= element_text(hjust=0.5, size = 14))))
+```
+
+It can be seen from the image that the proportion of elderly people is lower in areas with more total cases.
+
+## SMART Question: Are the total cases related to gender?
+```{r}
+ggplotly(ggplotly(ggplot(df2, aes(x=rank, y=Female, fill=rank)) + geom_boxplot() + scale_fill_brewer(palette="Spectral") + ggtitle("Female vs. Total cases") + ylab("Proportion of female") + xlab("Total cases") +  theme(plot.title= element_text(hjust=0.5, size = 14))))
+```
+
+In areas with more total cases, the average percentage of women is higher.
+
+## SMART Question: Are the total cases related to Poverty?
+```{r}
+ggplotly(ggplotly(ggplot(df2, aes(x=rank, y=Poverty, fill=rank)) + geom_boxplot() + scale_fill_brewer(palette="Spectral") + ggtitle("Poverty vs. Total cases") + ylab("Proportion of Poverty") + xlab("Total cases") +  theme(plot.title= element_text(hjust=0.5, size = 14))))
+```
+
+From the first to the third level, the more total cases, the larger the average proportion of poor people. The average proportion of poor people in severely affected areas is the lowest.
 ## SMART Question:
 ## SMART Question:
 ## SMART Question:
