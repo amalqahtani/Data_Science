@@ -5,3 +5,14 @@ ggplot2
 gridExtra
 kableExtra
 readxl
+<<<<<<< Updated upstream
+=======
+tidyr
+dplyr
+xtable
+stringi
+lattice
+DMwR
+corrplot
+plotly
+>>>>>>> Stashed changes
