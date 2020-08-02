@@ -15,3 +15,5 @@ corrplot
 plotly
 zoo
 lmtest
+Matrix
+glmnet

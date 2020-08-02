@@ -387,7 +387,183 @@ From the first to the third level, the more total cases, the larger the average 
 # Chapter 5: Linear Regression Model
 ## SMART Question: What factors influence the death the most?
 
-# Chapter 6: Conclusion
-# Chapter 7: Bibliography
+
+# Chapter 6: LASSO & Ridge Regression
+
+We convert the two variables Presence of Drinking Water Violation and Stay At Home Order After First Case into categorical variables. Then began to fit LASSO regression and ridge regression. We normalize the data, then split the data into training and test set, so that we can estimate test errors. The split will be used here for Lasso and later for Ridge regression. 
+
+## LASSO Regression
+
+We draw the plot for different $\lambda$ values to see the overall trend.
+```{r}
+getwd()
+lassodf=data.frame(read.csv("V1.csv", header = TRUE))[,-2]
+
+colnames(lassodf) <- c("TC","population","young","old","black","AIAN","Asian","NH","Hispanic","NHW","Female","Rural","Population.Density","Housing.Density","Sunlight","GDP","Poverty","Unemployed","Children.Poverty","Income.Inequality","Social","PM2.5","Water","SHP","poorhealth","Unhealthy.Days","smokers","Obesity","Physically.ina","WAEO","CRD","Temp","Order")
+
+
+lassodf$Poverty=as.numeric(lassodf$Poverty)
+lassodf$Water=as.factor(lassodf$Water)
+lassodf$Order=as.factor(lassodf$Order)
+#str(lassodf)
+
+# subset(lassodf, TC != "NA")
+lassodf=na.omit(lassodf)
+
+```
+
+```{r uzscale_fcn}
+uzscale <- function(df, append=0, excl=NULL) { 
+  #' Standardize dataframe to z scores, safe for non-numeric variables. 
+  #' ELo 201904 GWU DATS
+  #' @param df The dataframe.
+  #' @param append T/F or 0/1. Option to append scaled columns or replace original columns in the dataframe.
+  #' @param excl A list c(a,b,"d","ef") of excluded columns, either by their indexes and/or names.
+  #' @return The transformed dataframe, appended or replaced with standardized scores. Non-numeric columns will not be appended, or if "replace option" is chosen, the columns will be untouched.
+  #' @examples
+  #' library("ISLR")
+  #' tmp = uzscale( Hitters )
+  #' tmp = uzscale( Hitters, 1 )
+  #' tmp = uzscale( Hitters, TRUE, c(19,"NewLeague") )
+  
+  append = ifelse(append==TRUE || append=="true" || append=="True" || append=="T" || append=="t" || append==1 || append=="1", TRUE, FALSE) # standardize append 
+  nmax = length(df)
+  if (nmax < 1 || !is.numeric(nmax) ) { return(df) }
+  df1 = df
+  onames = colnames(df)  # the original column names
+  cnames = onames  # the new column names, if needed start with the original ones
+  znames = paste("z",cnames, sep="")     # new column names added prefix 'z'. Those are non-numeric will not be used.
+  nadd = ifelse(append, nmax, 0) # add to the column index or replace the orig columns
+  j=1  # counting index
+  for( i in 1:nmax ) {
+    if ( is.numeric(df[,i]) && !( i %in% excl || onames[i] %in% excl ) ) { 
+      df1[,j+nadd] = scale(df[,i])
+      cnames = c(cnames, znames[i])
+      j=j+1
+    } else if ( !append ) { j=j+1
+    } # if append == 1 and (colunm non-numeric or excluded), do not advance j.
+  }
+  if (append) { colnames(df1) <- cnames }
+  return(df1)
+}
+```
+
+```{r sd&split}
+stdf=uzscale(lassodf, 0)
+
+x=model.matrix(TC~.,stdf)[,-1]
+y=stdf$TC
+
+loadPkg("glmnet")
+grid=10^seq(5,-5,length=100) # prepare log scale grid for λ values, from 10^10 to 10^-2, in 100 segments
+
+loadPkg("dplyr")
+set.seed(1)
+train = stdf %>% sample_frac(0.5)
+test = stdf %>% setdiff(train)
+
+x_train = model.matrix(TC~., train)[,-1]
+x_test = model.matrix(TC~., test)[,-1]
+
+y_train = train %>% select(TC) %>% unlist() # %>% as.numeric()
+y_test = test %>% select(TC) %>% unlist() # %>% as.numeric()
+```
+
+```{r lassomodel}
+lasso.mod=glmnet(x_train,y_train,alpha=1,lambda=grid)
+plot(lasso.mod)
+set.seed(1)
+cv.out.lasso=cv.glmnet(x_train,y_train,alpha=1)
+plot(cv.out.lasso)
+```
+
+```{r}
+bestlam.lasso=cv.out.lasso$lambda.min
+cat("lowest lamda from CV: ", bestlam.lasso, "\n\n")
+```
+
+We see that the lowest MSE is when $\lambda$ appro = `r round(bestlam.lasso,digits=6)`. 
+
+```{r}
+lasso.pred=predict(lasso.mod,s=bestlam.lasso,newx=x_test)
+#
+out.lasso = glmnet(x, y, alpha = 1, lambda = grid) # Fit lasso model on full dataset
+lassoMeanMse = mean((lasso.pred-y_test)^2)
+cat("Mean MSE for best Lasso lamda: ", lassoMeanMse, "\n\n")
+#
+lasso_coef = predict(out.lasso, type = "coefficients", s = bestlam.lasso)[1:13,] # Display coefficients using λ chosen by CV
+cat("\nAll the coefficients : \n")
+lasso_coef
+cat("\nThe non-zero coefficients : \n")
+lasso_coef[lasso_coef!=0]
+```
+From LASSO regression, the coefficients of 11 variables are not zero, the coefficients of the remaining variables become zero. From the results, we can see that race, gender, age, population, population density and rural proportions will all have an impact on total cases.
+
+```{r lasso R2, echo=FALSE}
+sst1 <- sum((y_test - mean(y_test))^2)
+sse1 <- sum((lasso.pred - y_test)^2)
+rsq1 <- 1 - sse1 / sst1
+```
+We then calculate the R squared of lasso regression, which is `r rsq1`.  
+
+## Ridge Regression
+```{r}
+grid2=10^seq(10,-2,length=100)
+ridge.mod=glmnet(x,y,alpha=0,lambda=grid2)
+dim(coef(ridge.mod))
+plot(ridge.mod) 
+```
+```{r}
+#ridge.mod$lambda[50] # 11498
+coef(ridge.mod)[,50]
+#sqrt(sum(coef(ridge.mod)[-1,50]^2)) # 0.000138
+#ridge.mod$lambda[60] # 705
+coef(ridge.mod)[,60] 
+#sqrt(sum(coef(ridge.mod)[-1,60]^2))  # 0.00224
+
+```
+Because the ridge regression uses the "L2 norm", the coefficients are expected to be smaller when $\lambda$ is large. Our "mid-point" (the 50-th) of $\lambda$ equals to 11498, and the sum of squares of coefficients = `r round(sqrt(sum(coef(ridge.mod)[-1,50]^2)),digits=10)`. Compared to the 60-th value (we have a decreasing sequence) $\lambda$ of = 705, we find the sum of squares of the coefficients to be `r round(sqrt(sum(coef(ridge.mod)[-1,60]^2)),digits=7)`, about 16 times larger.
+
+We can use the predict function for various purposes, such as getting the predicted coefficients for $\lambda$=50, for example.
+
+```{r predridge, echo=FALSE}
+predict(ridge.mod,s=50,type="coefficients")[1:33,]
+```
+
+Then we use the separated training set and test set to see the test error.
+```{r predrid, echo=FALSE}
+ridge.mod=glmnet(x_train,y_train,alpha=0,lambda=grid, thresh=1e-12)
+ridge.pred=predict(ridge.mod,s=4,newx=x_test)
+```
+The test set mean squared error (MSE) is `r mean((ridge.pred-y_test)^2)`. (We are using standardized scores for $\lambda = 4$.)
+
+```{r mseridge, include=FALSE}
+mean((mean(y_train)-y_test)^2) # the test set MSE
+```
+On the other hand, for the null model ($\lambda$ approaches infinity), the MSE can be found to be `r mean((mean(y_train)-y_test)^2)`. So $\lambda = 4$ reduces the variance by about half, at the expense of bias.
+
+```{r mseridge2, echo=FALSE}
+ridge.pred=predict(ridge.mod,s=1e10,newx=x_test)
+```
+We could have also used a large $\lambda$ value to find the MSE for the null model. These two methods yield essentially the same answer of `r mean((ridge.pred-y_test)^2)`.
+
+```{r mseridg3, echo=FALSE}
+ridge.pred = predict(ridge.mod, s = 0, newx = x_test)
+#mean((ridge.pred - y_test)^2)
+predict(ridge.mod, s = 0, type="coefficients")[1:33,]
+```
+
+Now for the other extreme special case of small $\lambda$, which is the ordinary least square (OLS) model. We can first use the ridge regression result to predict the $\lambda$ =0 case. The MSE was found to be `r mean((ridge.pred - y_test)^2)` using this result. 
+
+We can also build the OLS model directly, caculate MSE.
+```{r, echo=FALSE}
+ols.mod = lm(TC~., data = train)
+summary(ols.mod)
+```
+The MSE for OLS regression is `r mean(residuals(ols.mod)^2)`
+
+
+# Chapter 7: Conclusion
+# Chapter 8: Bibliography
 Cases in the U.S. (2020, August 01). Retrieved August 01, 2020, from     https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/cases-in-us.html 
 
