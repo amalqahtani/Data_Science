@@ -325,8 +325,8 @@ H1: The sample data is significantly different from the normal distribution
 The p-value is less than 0.05, the null hypothesis is rejected, and the total cases do not conform to the normal distribution.
 
 Test for homogeneity of variance
-H0: The variances of the groups are not significantly different
-H1: The variances of several groups are significantly different
+H0: Data with the same variance at different levels
+H1: Data without the same variance at different levels
 The result shows that the p value is less than 0.05, rejecting the null hypothesis, and total cases do not meet the homogeneity of variance.
 
 ## SMART Question: The proportion of which race is related to the number of confirmed cases and deaths
@@ -347,6 +347,25 @@ ggplotly(ggplotly(ggplot(df2, aes(x=rank, y=old, fill=rank)) + geom_boxplot() + 
 ```
 
 It can be seen from the image that the proportion of elderly people is lower in areas with more total cases.
+
+```{r}
+loadPkg('lmtest')
+test1 <- bptest(df2$old~rank)
+test1$p.value
+
+old.anova <- aov(df2$old~rank)
+summary(old.anova)
+TKcond <- TukeyHSD(old.anova)
+TKcond
+
+par(las=1)
+plot(TukeyHSD(old.anova))
+```
+According to the BP test, the p value is greater than 0.05, and the null hypothesis is accepted: the variance of old is the same under different ranks. The next step ANOVA test can be performed.
+
+According to the ANOVA test, the p value is less than 0.05, and the null hypothesis is rejected: the mean value of old is the same under different ranks. It shows that the proportion of elderly people over 65 years old is different in regions with different confirmed cases.
+
+According to the Tukey HSD test for multiple comparisons, all p values are less than 0.05, so the difference in old between different ranks is statistically significant.
 
 ## SMART Question: Are the total cases related to gender?
 ```{r}
