@@ -128,6 +128,63 @@ xkablevif = function(model, title="VIFs of the model", digits = 3, pos="left", b
 }
 ```
 
+```{r outlierKD2}
+# Fix outliers
+outlierKD2 <- function(df, var, rm=FALSE) { 
+    #' Original outlierKD functino by By Klodian Dhana,
+    #' https://www.r-bloggers.com/identify-describe-plot-and-remove-the-outliers-from-the-dataset/
+    #' Modified to have third argument for removing outliers instead of interactive prompt, 
+    #' and after removing outlier, original df will not be changed. The function returns a new df, 
+    #' which can be saved as original df name if desired.
+    #' Check outliers, and option to remove them, save as a new dataframe. 
+    #' @param df The dataframe.
+    #' @param var The variable in the dataframe to be checked for outliers
+    #' @param rm Boolean. Whether to remove outliers or not.
+    #' @return The dataframe with outliers replaced by NA if rm==TRUE, or df if nothing changed
+    #' @examples
+    #' outlierKD2(mydf, height, FALSE)
+    #' mydf = outlierKD2(mydf, height, TRUE)
+    #' mydfnew = outlierKD2(mydf, height, TRUE)
+    dt = df # duplicate the dataframe for potential alteration
+    var_name <- eval(substitute(var),eval(dt))
+    na1 <- sum(is.na(var_name))
+    m1 <- mean(var_name, na.rm = T)
+    par(mfrow=c(2, 2), oma=c(0,0,3,0))
+    boxplot(var_name, main="With outliers")
+    hist(var_name, main="With outliers", xlab=NA, ylab=NA)
+    outlier <- boxplot.stats(var_name)$out
+    mo <- mean(outlier)
+    var_name <- ifelse(var_name %in% outlier, NA, var_name)
+    boxplot(var_name, main="Without outliers")
+    hist(var_name, main="Without outliers", xlab=NA, ylab=NA)
+    title("Outlier Check", outer=TRUE)
+    na2 <- sum(is.na(var_name))
+    cat("Outliers identified:", na2 - na1, "\n")
+    cat("Propotion (%) of outliers:", round((na2 - na1) / sum(!is.na(var_name))*100, 1), "\n")
+    cat("Mean of the outliers:", round(mo, 2), "\n")
+    m2 <- mean(var_name, na.rm = T)
+    cat("Mean without removing outliers:", round(m1, 2), "\n")
+    cat("Mean if we remove outliers:", round(m2, 2), "\n")
+    
+    # response <- readline(prompt="Do you want to remove outliers and to replace with NA? [yes/no]: ")
+    # if(response == "y" | response == "yes"){
+    if(rm){
+        dt[as.character(substitute(var))] <- invisible(var_name)
+        #assign(as.character(as.list(match.call())$dt), dt, envir = .GlobalEnv)
+        cat("Outliers successfully removed", "\n")
+        return(invisible(dt))
+    } else {
+        cat("Nothing changed", "\n")
+        return(invisible(df))
+    }
+}
+# sample usage
+# mlb2 = outlierKD2(mlb, weight, TRUE) # This will remove weight outliers, replace those values by NA, then save it as a new dataframe mlb2
+# mlb = outlierKD2(mlb, weight, TRUE) # This will remove weight outliers, replace those values by NA, then REPLACE the dataframe mlb with the new one.
+# outlierKD2(mlb, weight, FALSE) # This will NOT remove weight outliers, but it will show the charts with and without outliers nonetheless. 
+# outlierKD2(mlb, weight) # same as above, as the last argument is optional, default = FALSE 
+```
+
 ![](covid19.png)
 
 # Chapter 1: Introduction
@@ -166,6 +223,9 @@ cols <- c(1:2, 7:19, 56)
 small_df=data[,cols]
 names(small_df)[16] <- c("poor_health")
 small_df
+#Disease_data<-data[,c(1,2,7,8,47,50,53,55,60,61,65,71,72)]
+#stay_at_home<-data[,c(1,2,5,7,78,79,80,81,82)]
+#str(stay_at_home)
 #Print out the first 5 and the last 3 rows of the dataframe.**  
 #head(data, 5)
 #tail(data, 3)
@@ -306,7 +366,54 @@ p
 According to the average value, we get a pie chart of race proportions, from which we can see the overall proportions of different races. In the following, we will study the proportion of which race is related to the number of confirmed cases and the number of deaths.
 
 ## Stay at home policy in each province
-### Is the stay at home policy related to the first case coming time?
+### Is the stay at home policy related to the Total Cases infected?
+First, we do the t-test and find the 80% and 99% confidence interval.
+```{r,t-test,echo=F}
+loadPkg("dplyr") 
+#remove the outlier for total_cases
+stay_at_home<-data[,c(1,2,5,7,78,79,80,81,82)]
+names(stay_at_home)[5:9] <- c("first_case","stay_home","no_case","no_order","order_after_first")
+stay_at_home$first_case<-as.factor(stay_at_home$first_case)
+#bike$Season<-as.factor(bike$Season)
+#colnames(stay_at_home)[8,9]=c("no_order","order_after_first")
+#stay_at_home<-subset(stay_at_home,is.na(total_cases))
+nrow(stay_at_home)
+#str(stay_at_home)
+#stay_at_home<-stay_at_home %>% subset(total_cases>0)
+#nrow(stay_at_home)
+stay_at_home
+stay_at_home = outlierKD2(stay_at_home, total_cases, TRUE)
+nrow(stay_at_home)
+Before_order <- subset(stay_at_home,no_order==1)
+After_order  <- subset(stay_at_home,order_after_first==1)
+Before_ttest80 = t.test(x = Before_order$total_cases, conf.level = 0.80)
+Before_ttest80
+After_ttest80 = t.test(x = After_order$total_cases, conf.level = 0.80)
+After_ttest80
+Before_ttest99 = t.test(x = Before_order$total_cases, conf.level = 0.99)
+Before_ttest99
+After_ttest99 = t.test(x = After_order$total_cases, conf.level = 0.99)
+After_ttest99
+```
+Before first case have stay at home order 80% confidence interval  (8.34,9.87) is not overlap with after first case have stay at home order(22.2,24.0).
+
+Before first case have stay at home order 99% confidence interval  (7,56,10.65) is not overlap with after first case have stay at home order(21.4,24.9).
+
+As a result, the average Total Cases infected number is different from separate groups that the Stay at Home Policy is order before the First Case or not.
+
+```{r,box_plot,echo=F}
+ggplot(data = Before_order, aes(x=first_case, y=total_cases))+
+  geom_boxplot(fill = "#0000aa", alpha = .7)+
+  labs(title="Total Cases Boxplot for Before the  First Case Stay at Home") +
+  labs(x="First Cases", y="Total Cases") 
+ggplot(data = After_order, aes(x=first_case, y=total_cases))+
+  geom_boxplot(fill="#FF9933", alpha = .7)+
+  labs(title="Total Cases Boxplot for After the First Case Stay at Home") +
+  labs(x="First Cases", y="Total Cases") 
+#str(stay_at_home)
+```
+For these two box-plot diagoram, the Total Cases infected are more higher if the Stay at Home Policy is ordered After the first cases. So we can say the Stay at Home Policy do decrease the Totall Cases inflected if it is ordered before the Fist Case happened. 
+
 ### Is the stay at home policy after the first case related to the people inflected number?
 
 ## Underlying Health Conditions
@@ -460,11 +567,86 @@ plot(TukeyHSD(Poverty.anova))
 The p value of bp test is greater than 0.05, which meets the premise of ANOVA test. The p value of the ANOVA test is less than 0.05, and the null hypothesis is rejected: the mean value of Poverty is the same under different ranks, indicating that the total cases of different levels have different preference. From the results of Tukey HSD, we can see that the difference between total cases from 0 to 39 is not big, but the fourth level is significantly different from other levels. It shows that where the epidemic is severe, the poverty is obviously different from other places.
 
 ## SMART Question:
+
+
 ## SMART Question:
 ## SMART Question:
 
 # Chapter 5: Linear Regression Model
 ## SMART Question: What factors influence the death rate the most? 
+##Does any disease relate the death rate?
+
+### correlation of each disease to the death rate.
+```{r,disease,echo=F}
+loadPkg("dplyr") 
+disease<-data[,c(1,2,7,8,47,50,53,55,60,61,65,71,72)]
+#str(disease)
+names(disease)[5:13] <- c("sleep_hour","diabetes","heart_disease","obesity_age","smokers","adult_obesity","excessive_drink","liver_crude_mortality","liver_Total_death","")
+disease2<-disease[ , -which(colnames(disease) %in% c("Province","State","total_cases"))]
+
+disease2$sleep_hour<-as.numeric(as.character(disease2$sleep_hour))
+disease2$smokers<-as.numeric(as.character(disease2$smokers))
+disease2$adult_obesity<-as.numeric(as.character(disease2$adult_obesity))
+disease2$excessive_drink<-as.numeric(as.character(disease2$excessive_drink))
+disease2$liver_crude_mortality<-as.numeric(as.character(disease2$liver_crude_mortality))
+disease2$liver_Total_death<-as.numeric(as.character(disease2$liver_Total_death))
+disease2=disease2 %>% subset(deaths>0)
+disease2=disease2 %>% subset(heart_disease>0)
+disease2=disease2 %>% subset(obesity_age>0)
+disease2=disease2 %>% subset(smokers>0)
+disease2=disease2 %>% subset(diabetes>0)
+disease2=disease2 %>% subset(sleep_hour>0)
+disease2=disease2 %>% subset(adult_obesity>0)
+disease2=disease2 %>% subset(excessive_drink>0)
+disease2=disease2 %>% subset(liver_crude_mortality>0)
+disease2=disease2 %>% subset(liver_Total_death>0)
+disease2_corr<-cor(disease2)
+#str(disease2)
+corrplot(disease2_corr,method="circle")
+#corrplot.mixed(cor(disease2))
+#corrplot.mixed(cor(race))
+```
+It shows liver_total_death is highly correlated to deaths at correlation = 0.4338.
+
+Use exhaustive method for feature selection 
+```{r,q10,echo=F}
+loadPkg("leaps")
+reg.leaps <- regsubsets(deaths~., data = disease2, nbest = 1, method = "exhaustive")  # leaps, 
+plot(reg.leaps, scale = "bic", main = "BIC")
+plot(reg.leaps, scale = "adjr2", main = "Adjusted R^2")
+lm.dis1<-lm(deaths~sleep_hour+obesity_age+liver_crude_mortality+liver_Total_death,data = disease2)
+summary(lm.dis1)
+faraway::vif(lm.dis1)
+
+lm.dis2<-lm(deaths~sleep_hour+heart_disease+smokers+adult_obesity+liver_crude_mortality+liver_Total_death,data = disease2)
+summary(lm.dis2)
+faraway::vif(lm.dis2)
+```
+For BIC model selection: sleep_hour, obesity_age, liver_crude_mortality and liver_total_death are best variable selection.
+
+ALL P_values <<0.05 and VIF values all < 5, good model.
+
+For Adjusted R^2: Sleep_hour, heart_disease, smokers, adult_obesity, liver_crude_mortality and liver_total_death are best variable selection 
+
+ALL P_values <<0.05 and VIF values all < 5, good model.
+
+```{r,cp,echo=F}
+loadPkg("carData")
+loadPkg("car")
+layout(matrix(1:2, ncol = 2))
+## Adjusted R2
+#res.legend <-
+#    subsets(reg.leaps, statistic="adjr2", legend = FALSE, min.size = 3, main = "Adjusted R^2")
+## Mallow Cp
+res.legend <-
+    subsets(reg.leaps, statistic="cp", legend = FALSE, min.size=1, main = "Mallow Cp")
+abline(a = 1, b = 1, lty = 2)
+    subsets(reg.leaps, statistic="cp", legend = FALSE, min.size=6, main = "Mallow Cp")
+abline(a = 1, b = 1, lty = 2)
+
+```
+By Mallow Cp line, sleep_hour, heart_disease, smokers, adult_obseity, liver_crude_mortality, liver_total_death are best selection, which is exactly Adjusted R^2 model. 
+
 
 
 # Chapter 6: LASSO & Ridge Regression
