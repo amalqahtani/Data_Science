@@ -401,6 +401,7 @@ Before first case have stay at home order 99% confidence interval  (7,56,10.65) 
 
 As a result, the average Total Cases infected number is different from separate groups that the Stay at Home Policy is order before the First Case or not.
 
+### Is the stay at home policy after the first case related to the people inflected number?
 ```{r,box_plot,echo=F}
 ggplot(data = Before_order, aes(x=first_case, y=total_cases))+
   geom_boxplot(fill = "#0000aa", alpha = .7)+
@@ -414,12 +415,69 @@ ggplot(data = After_order, aes(x=first_case, y=total_cases))+
 ```
 For these two box-plot diagoram, the Total Cases infected are more higher if the Stay at Home Policy is ordered After the first cases. So we can say the Stay at Home Policy do decrease the Totall Cases inflected if it is ordered before the Fist Case happened. 
 
-### Is the stay at home policy after the first case related to the people inflected number?
 
 ## Underlying Health Conditions
 ###  Are there any common underlying health conditions?
+### Does any disease relate to the death rate?
+```{r,disease,echo=F}
+loadPkg("dplyr") 
+disease<-data[,c(1,2,7,8,47,50,53,55,60,61,65,71,72)]
+#str(disease)
+names(disease)[5:13] <- c("sleep_hour","diabetes","heart_disease","obesity_age","smokers",
+"adult_obesity","excessive_drink","liver_crude_mortality","liver_Total_death","")
+disease2<-disease[ , -which(colnames(disease) %in% c("Province","State","total_cases"))]
+
+disease2$sleep_hour<-as.numeric(as.character(disease2$sleep_hour))
+disease2$smokers<-as.numeric(as.character(disease2$smokers))
+disease2$adult_obesity<-as.numeric(as.character(disease2$adult_obesity))
+disease2$excessive_drink<-as.numeric(as.character(disease2$excessive_drink))
+disease2$liver_crude_mortality<-as.numeric(as.character(disease2$liver_crude_mortality))
+disease2$liver_Total_death<-as.numeric(as.character(disease2$liver_Total_death))
+disease2=disease2 %>% subset(deaths>0)
+#disease2=disease2 %>% subset(total_cases>0)
+disease2=disease2 %>% subset(heart_disease>0)
+disease2=disease2 %>% subset(obesity_age>0)
+disease2=disease2 %>% subset(smokers>0)
+disease2=disease2 %>% subset(diabetes>0)
+disease2=disease2 %>% subset(sleep_hour>0)
+disease2=disease2 %>% subset(adult_obesity>0)
+disease2=disease2 %>% subset(excessive_drink>0)
+disease2=disease2 %>% subset(liver_crude_mortality>0)
+disease2=disease2 %>% subset(liver_Total_death>0)
+disease2_corr<-cor(disease2)
+#str(disease2)
+corrplot(disease2_corr,method="circle")
+#corrplot.mixed(cor(disease2))
+#corrplot.mixed(cor(race))
+```
+It shows liver_total_death is highly correlated to deaths at correlation = 0.4338.
 
 ## Impact of Temperature
+
+### Does the temperature relate the Total Cases or Death Rate? 
+
+```{r,temperature,echo=F}
+temp<-data[,c(1,2,6,7,8,75,76,77)]
+names(temp)[3] <- c("days")
+names(temp)[6:8] <- c("temp_peak","temp_before","temp_current")
+str(temp)
+#ggplot(data=temp)+
+#  geom_point(mapping = aes(x=temp_peak, y=total_cases, color=State))+
+#  ggtitle("Scatter plot of baseball player weigth(y, lbs) vs height(x, inches)")
+temp2<-temp[ , -which(colnames(temp) %in% c("Province","State"))]
+#temp2$liver_Total_death<-as.numeric(as.character(disease2$liver_Total_death))
+temp2=temp2 %>% subset(deaths>0)
+temp2=temp2 %>% subset(days>0)
+temp2=temp2 %>% subset(total_cases>0)
+temp2=temp2 %>% subset(temp_peak>0)
+temp2=temp2 %>% subset(temp_before>0)
+temp2=temp2 %>% subset(temp_current>0)
+temp2_corr<-cor(temp2)
+#str(disease2)
+corrplot(temp2_corr,method="circle")
+```
+
+By the correlation diagorm, the temperature is less relate to total_cases and deaths. 
 
 
 # Chapter 4: Independent Variables EDA: Boxplots, Scatterplots, ANOVA, & Chi-Square
@@ -498,7 +556,7 @@ ggplotly(ggplotly(ggplot(df2, aes(x=rank, y=young, fill=rank)) + geom_boxplot() 
 
 It is difficult to see whether the two are related from the image, so we will examine it next. The first is the bp test to see if the hypothesis of the ANOVA test is satisfied. If it is satisfied, we will perform an ANOVA test. If it is not satisfied, we will perform a chi-square test.
 
-```{r young bptest}
+```{r young bptest,echo=F}
 test2 <- bptest(df2$young~rank)
 test2$p.value
 ```
@@ -574,40 +632,8 @@ The p value of bp test is greater than 0.05, which meets the premise of ANOVA te
 
 # Chapter 5: Linear Regression Model
 ## SMART Question: What factors influence the death rate the most? 
-##Does any disease relate the death rate?
 
-### correlation of each disease to the death rate.
-```{r,disease,echo=F}
-loadPkg("dplyr") 
-disease<-data[,c(1,2,7,8,47,50,53,55,60,61,65,71,72)]
-#str(disease)
-names(disease)[5:13] <- c("sleep_hour","diabetes","heart_disease","obesity_age","smokers","adult_obesity","excessive_drink","liver_crude_mortality","liver_Total_death","")
-disease2<-disease[ , -which(colnames(disease) %in% c("Province","State","total_cases"))]
-
-disease2$sleep_hour<-as.numeric(as.character(disease2$sleep_hour))
-disease2$smokers<-as.numeric(as.character(disease2$smokers))
-disease2$adult_obesity<-as.numeric(as.character(disease2$adult_obesity))
-disease2$excessive_drink<-as.numeric(as.character(disease2$excessive_drink))
-disease2$liver_crude_mortality<-as.numeric(as.character(disease2$liver_crude_mortality))
-disease2$liver_Total_death<-as.numeric(as.character(disease2$liver_Total_death))
-disease2=disease2 %>% subset(deaths>0)
-disease2=disease2 %>% subset(heart_disease>0)
-disease2=disease2 %>% subset(obesity_age>0)
-disease2=disease2 %>% subset(smokers>0)
-disease2=disease2 %>% subset(diabetes>0)
-disease2=disease2 %>% subset(sleep_hour>0)
-disease2=disease2 %>% subset(adult_obesity>0)
-disease2=disease2 %>% subset(excessive_drink>0)
-disease2=disease2 %>% subset(liver_crude_mortality>0)
-disease2=disease2 %>% subset(liver_Total_death>0)
-disease2_corr<-cor(disease2)
-#str(disease2)
-corrplot(disease2_corr,method="circle")
-#corrplot.mixed(cor(disease2))
-#corrplot.mixed(cor(race))
-```
-It shows liver_total_death is highly correlated to deaths at correlation = 0.4338.
-
+##Which disease variables best explian death rate?
 Use exhaustive method for feature selection 
 ```{r,q10,echo=F}
 loadPkg("leaps")
