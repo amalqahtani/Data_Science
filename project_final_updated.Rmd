@@ -376,8 +376,6 @@ head(a,10)
 ```
 
 
-
-
 ## Patient Demographics
 ### What are the patient demographics?
 ```{r}
@@ -457,6 +455,7 @@ ggplot(data = After_order, aes(x=first_case, y=total_cases))+
   labs(x="First Cases", y="Total Cases") 
 #str(stay_at_home)
 ```
+
 For these two box-plot diagoram, the Total Cases infected are more higher if the Stay at Home Policy is ordered After the first cases. So we can say the Stay at Home Policy do decrease the Totall Cases inflected if it is ordered before the Fist Case happened. 
 
 
@@ -496,6 +495,8 @@ corrplot(disease2_corr,method="circle")
 #corrplot.mixed(cor(disease2))
 #corrplot.mixed(cor(race))
 ```
+
+
 It shows liver_total_death is highly correlated to deaths at correlation = 0.4338.
 
 
@@ -630,6 +631,8 @@ loadPkg("corrplot")
 cor(race)
 corrplot.mixed(cor(race))
 ```
+
+
 First, let's look at the relationship between the total number of cases and race. It can be seen from the correlation coefficient graph that the positive correlation coefficient between total cases and Asians is the largest, which indicates that the higher the proportion of Asians, the more total cases, and Asian infections may be more serious. The other two races with higher correlation coefficients with TC are Hispanics and blacks. The correlation coefficient between total cases and non-Hispanic whites is negative, indicating that the higher the proportion of this race, the fewer the number of people diagnosed with COVID-19.
 
 Second, we can see the relationship between the number of deaths and race, and the results are consistent with the above results.
@@ -640,6 +643,7 @@ Second, we can see the relationship between the number of deaths and race, and t
 loadPkg("plotly")
 ggplotly(ggplotly(ggplot(df2, aes(x=rank, y=old, fill=rank)) + geom_boxplot() + scale_fill_brewer(palette="Spectral") + ggtitle("Proportion of elderly over 65 vs. Total cases") + ylab("Proportion of elderly over 65") + xlab("Total cases") +  theme(plot.title= element_text(hjust=0.5, size = 14))))
 ```
+
 
 It can be seen from the image that the proportion of elderly people is lower in areas with more total cases.
 
@@ -656,6 +660,7 @@ TKcond
 par(las=1)
 plot(TukeyHSD(old.anova))
 ```
+
 According to the BP test, the p value is greater than 0.05, and the null hypothesis is accepted: the variance of old is the same under different ranks. The next step ANOVA test can be performed.
 
 According to the ANOVA test, the p value is less than 0.05, and the null hypothesis is rejected: the mean value of old is the same under different ranks. It shows that the proportion of elderly people over 65 years old is different in regions with different confirmed cases.
@@ -736,6 +741,8 @@ TKcond
 par(las=1)
 plot(TukeyHSD(Poverty.anova))
 ```
+
+
 The p value of bp test is greater than 0.05, which meets the premise of ANOVA test. The p value of the ANOVA test is less than 0.05, and the null hypothesis is rejected: the mean value of Poverty is the same under different ranks, indicating that the total cases of different levels have different preference. From the results of Tukey HSD, we can see that the difference between total cases from 0 to 39 is not big, but the fourth level is significantly different from other levels. It shows that where the epidemic is severe, the poverty is obviously different from other places.
 
 
@@ -782,6 +789,8 @@ abline(a = 1, b = 1, lty = 2)
 abline(a = 1, b = 1, lty = 2)
 
 ```
+
+
 By Mallow Cp line, sleep_hour, heart_disease, smokers, adult_obseity, liver_crude_mortality, liver_total_death are best selection, which is exactly Adjusted R^2 model. 
 
 
