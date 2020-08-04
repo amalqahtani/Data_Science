@@ -361,6 +361,23 @@ a=arrange(data_noNAinpoorhealth, desc(poor_health))
 head(a,10)
 ``` 
 
+```{r cities_poor_health, echo=F}
+ library(ggplot2)
+ library(dplyr)
+    top_n(data_noNAinpoorhealth, n=15, poor_health) %>%
+          ggplot(., aes(x=reorder(Province, -poor_health), y=poor_health, color=Province, fill=Province)) +
+  geom_bar(aes(y=poor_health), stat="identity") + 
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, size = 12, hjust = 1), 
+        axis.text.y = element_text(vjust = 1, size = 12, hjust = 1), 
+        panel.border = element_rect(colour = "black", fill=NA, size=1)) + 
+  labs(title="Barchart of the top 15 cities had the greatest % of population of people with poor health", x="Province", y="Poor_health")   
+  
+```
+
+
+
+
 ## Patient Demographics
 ### What are the patient demographics?
 ```{r}
