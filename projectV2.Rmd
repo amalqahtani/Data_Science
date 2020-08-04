@@ -40,6 +40,7 @@ loadPkg("ggplot2")
 loadPkg("gridExtra")
 loadPkg("kableExtra")
 loadPkg("data.table") 
+loadPkg("FNN")
 ```
 
 ```{r xkablesummary}
@@ -128,6 +129,7 @@ xkablevif = function(model, title="VIFs of the model", digits = 3, pos="left", b
 }
 ```
 
+<<<<<<< HEAD
 ```{r outlierKD2}
 # Fix outliers
 outlierKD2 <- function(df, var, rm=FALSE) { 
@@ -185,6 +187,8 @@ outlierKD2 <- function(df, var, rm=FALSE) {
 # outlierKD2(mlb, weight) # same as above, as the last argument is optional, default = FALSE 
 ```
 
+=======
+>>>>>>> 057974276d311f62a399ecbf144d7696b6b13cf8
 ![](covid19.png)
 
 # Chapter 1: Introduction
@@ -223,9 +227,12 @@ cols <- c(1:2, 7:19, 56)
 small_df=data[,cols]
 names(small_df)[16] <- c("poor_health")
 small_df
+<<<<<<< HEAD
 #Disease_data<-data[,c(1,2,7,8,47,50,53,55,60,61,65,71,72)]
 #stay_at_home<-data[,c(1,2,5,7,78,79,80,81,82)]
 #str(stay_at_home)
+=======
+>>>>>>> 057974276d311f62a399ecbf144d7696b6b13cf8
 #Print out the first 5 and the last 3 rows of the dataframe.**  
 #head(data, 5)
 #tail(data, 3)
@@ -366,6 +373,7 @@ p
 According to the average value, we get a pie chart of race proportions, from which we can see the overall proportions of different races. In the following, we will study the proportion of which race is related to the number of confirmed cases and the number of deaths.
 
 ## Stay at home policy in each province
+<<<<<<< HEAD
 ### Is the stay at home policy related to the Total Cases infected?
 First, we do the t-test and find the 80% and 99% confidence interval.
 ```{r,t-test,echo=F}
@@ -535,9 +543,9 @@ iris_test <- scalediris[iris_sample==2, 1:5]
 #Now we need to create our 'Y' variables or labels need to input into the KNN function
 iris.trainLabels <- iris[iris_sample==1, 1]
 iris.testLabels <- iris[iris_sample==2, 1]
-iris_pred <- knn(train = iris_training, test = iris_test, cl=iris.trainLabels, k=7)
-loadPkg("gmodels")
-IRISPREDCross <- CrossTable(iris.testLabels, iris_pred, prop.chisq = FALSE)
+#iris_pred <- knn(train = iris_training, test = iris_test, cl=iris.trainLabels, k=7)
+#loadPkg("gmodels")
+#IRISPREDCross <- CrossTable(iris.testLabels, iris_pred, prop.chisq = FALSE)
 ```
 ## Impact of Temperature
 
@@ -565,6 +573,15 @@ corrplot(temp2_corr,method="circle")
 ```
 
 By the correlation diagorm, the temperature is less relate to total_cases and deaths. 
+=======
+### Is the stay at home policy related to the first case coming time?
+### Is the stay at home policy after the first case related to the people inflected number?
+
+## Underlying Health Conditions
+###  Are there any common underlying health conditions?
+
+## Impact of Temperature
+>>>>>>> 057974276d311f62a399ecbf144d7696b6b13cf8
 
 
 # Chapter 4: Independent Variables EDA: Boxplots, Scatterplots, ANOVA, & Chi-Square
@@ -643,7 +660,11 @@ ggplotly(ggplotly(ggplot(df2, aes(x=rank, y=young, fill=rank)) + geom_boxplot() 
 
 It is difficult to see whether the two are related from the image, so we will examine it next. The first is the bp test to see if the hypothesis of the ANOVA test is satisfied. If it is satisfied, we will perform an ANOVA test. If it is not satisfied, we will perform a chi-square test.
 
+<<<<<<< HEAD
 ```{r young bptest,echo=F}
+=======
+```{r young bptest}
+>>>>>>> 057974276d311f62a399ecbf144d7696b6b13cf8
 test2 <- bptest(df2$young~rank)
 test2$p.value
 ```
@@ -712,14 +733,18 @@ plot(TukeyHSD(Poverty.anova))
 The p value of bp test is greater than 0.05, which meets the premise of ANOVA test. The p value of the ANOVA test is less than 0.05, and the null hypothesis is rejected: the mean value of Poverty is the same under different ranks, indicating that the total cases of different levels have different preference. From the results of Tukey HSD, we can see that the difference between total cases from 0 to 39 is not big, but the fourth level is significantly different from other levels. It shows that where the epidemic is severe, the poverty is obviously different from other places.
 
 ## SMART Question:
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 057974276d311f62a399ecbf144d7696b6b13cf8
 ## SMART Question:
 ## SMART Question:
 
 # Chapter 5: Linear Regression Model
 ## SMART Question: What factors influence the death rate the most? 
 
+<<<<<<< HEAD
 ##Which disease variables best explian death rate?
 Use exhaustive method for feature selection 
 ```{r,q10,echo=F}
@@ -761,6 +786,8 @@ abline(a = 1, b = 1, lty = 2)
 By Mallow Cp line, sleep_hour, heart_disease, smokers, adult_obseity, liver_crude_mortality, liver_total_death are best selection, which is exactly Adjusted R^2 model. 
 
 
+=======
+>>>>>>> 057974276d311f62a399ecbf144d7696b6b13cf8
 
 # Chapter 6: LASSO & Ridge Regression
 
