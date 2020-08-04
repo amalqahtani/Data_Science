@@ -352,6 +352,14 @@ print(aggregate(deaths~State,data=data_noNA,FUN=mean))
 
 ### Which cities had the greatest % of population of people with poor health?
 
+```{r poorhealth, echo=F}
+loadPkg("dplyr")
+data_noNAinpoorhealth = subset(data_noNA, poor_health != "NA")[,c(1,16)]
+data_noNAinpoorhealth$poor_health=as.numeric(data_noNAinpoorhealth$poor_health)
+#head(data_noNAinpoorhealth)
+a=arrange(data_noNAinpoorhealth, desc(poor_health))
+head(a,10)
+``` 
 
 ## Patient Demographics
 ### What are the patient demographics?
