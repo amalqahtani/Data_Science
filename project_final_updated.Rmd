@@ -797,47 +797,40 @@ By Mallow Cp line, sleep_hour, heart_disease, smokers, adult_obseity, liver_crud
 ## Which variables best explian death rate?
 ```{r}
 getwd()
-lineardf<-data[,c(1,2,7,8,9,10,11,12,13,14,15,16,17,19,20,21,22,23,24,26,33,34,35,37,39,40,41,47, 50,53,55,56,58,60,61,65,71,72)]
-colnames(lineardf) <- c("Province","State","TC","deaths","population","young","old","black","AIAN","Asian","NH","Hispanic","NHW","Female","Rural","Population.Density","Housing.Density","Sunlight","GDP","Poverty","Unemployed","Children.Poverty","Income.Inequality","Social","PM2.5","Water","SHP","sleep_hour","diabetes","heart_disease","obesity_age", "poorhealth","Unhealthy.Days","smokers","adult_obesity","excessive_drink","liver_crude_mortality","liver_Total_death","")
-
-lineardf$Poverty=as.numeric(lineardf$Poverty)
-lineardf$Water=as.factor(lineardf$Water)
-lineardf$sleep_hour<-as.numeric(as.character(lineardf$sleep_hour))
-lineardf$smokers<-as.numeric(as.character(lineardf$smokers))
-lineardf$adult_obesity<-as.numeric(as.character(lineardf$adult_obesity))
-lineardf$excessive_drink<-as.numeric(as.character(lineardf$excessive_drink))
-lineardf$liver_crude_mortality<-as.numeric(as.character(lineardf$liver_crude_mortality))
-lineardf$liver_Total_death<-as.numeric(as.character(lineardf$liver_Total_death))
-lineardf=lineardf %>% subset(deaths>0)
-lineardf=lineardf %>% subset(heart_disease>0)
-lineardf=lineardf %>% subset(obesity_age>0)
-lineardf=lineardf %>% subset(smokers>0)
-lineardf=lineardf %>% subset(diabetes>0)
-lineardf=lineardf %>% subset(sleep_hour>0)
-lineardf=lineardf %>% subset(adult_obesity>0)
-lineardf=lineardf %>% subset(excessive_drink>0)
-lineardf=lineardf %>% subset(liver_crude_mortality>0)
-lineardf=lineardf %>% subset(liver_Total_death>0)
-
-
+lineardf<-data[,c(1,2,7,8,9,10,11,12,13,14,15,16,17,19,20,21,22,23,24,26,33,34,35,37,39,41,47, 50,53,55,56,58,60,61,65,71,72)]
+colnames(lineardf) <- c("Province","State","TC","deaths","population","young","old","black","AIAN","Asian","NH","Hispanic","NHW","Female","Rural","Population.Density","Housing.Density","Sunlight","GDP","Poverty","Unemployed","Children.Poverty","Income.Inequality","Social","PM2.5","SHP","sleep_hour","diabetes","heart_disease","obesity_age", "poorhealth","Unhealthy.Days","smokers","adult_obesity","excessive_drink","liver_crude_mortality","liver_Total_death")
+#str(lineardf)
+lineardf2=as.data.frame(lapply(lineardf,as.numeric))
+#lineardf2$Water=as.factor(lineardf2$Water)
 # subset(lassodf, TC != "NA")
-lineardf=na.omit(lineardf)
+lineardf3=na.omit(lineardf2[,-c(1,2)])
+#str(lineardf3)
 
 ```
 ```{r,q10__,echo=F}
 loadPkg("leaps")
-reg.leaps1 <- regsubsets(deaths~., data = lineardf, nbest = 1, method = "exhaustive")  # leaps, 
+reg.leaps1 <- regsubsets(deaths~., data = lineardf3, nbest = 1, method = "exhaustive")  # leaps, 
 plot(reg.leaps1, scale = "bic", main = "BIC")
 plot(reg.leaps1, scale = "adjr2", main = "Adjusted R^2")
 
+lm.whole1<-lm(deaths~population+Asian+liver_Total_death,data = lineardf3)
+summary(lm.whole1)
+faraway::vif(lm.whole1)
 
+lm.whole2<-lm(deaths~population+Asian+Hispanic+liver_Total_death,data = lineardf3)
+summary(lm.whole2)
+faraway::vif(lm.whole2)
 
+lm.whole3<-lm(deaths~population+Asian,data = lineardf3)
+summary(lm.whole3)
+faraway::vif(lm.whole3)
 ```
 
+We use all variables to fit a linear model and select variables based on BIC. The linear model we get contains variables: population, Asian, liver_Total_death. According to the adjusted R-squared variable selection, our model includes: population, Asian, Hispanic, liver_Total_death. In the above two models, only the p value of population and Asian variables is less than 0.05, which is significant, and the VIF of population and liver_Total_death is too large and highly autocorrelated. So we remove liver_Total_death and use the other two variables to fit the third model.
 
-
-
-
+Final model:
+death=0.0000493 population + 1.2190622 Asian
+Adjusted R-squared=0.217, the model can explain 21.7% of the variation in death.
 
 
 # Chapter 6: LASSO & Ridge Regression
