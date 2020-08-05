@@ -758,6 +758,7 @@ loadPkg("leaps")
 reg.leaps <- regsubsets(deaths~., data = disease2, nbest = 1, method = "exhaustive")  # leaps, 
 plot(reg.leaps, scale = "bic", main = "BIC")
 plot(reg.leaps, scale = "adjr2", main = "Adjusted R^2")
+
 lm.dis1<-lm(deaths~sleep_hour+obesity_age+liver_crude_mortality+liver_Total_death,data = disease2)
 summary(lm.dis1)
 faraway::vif(lm.dis1)
@@ -792,6 +793,50 @@ abline(a = 1, b = 1, lty = 2)
 
 
 By Mallow Cp line, sleep_hour, heart_disease, smokers, adult_obseity, liver_crude_mortality, liver_total_death are best selection, which is exactly Adjusted R^2 model. 
+
+## Which variables best explian death rate?
+```{r}
+getwd()
+lineardf<-data[,c(1,2,7,8,9,10,11,12,13,14,15,16,17,19,20,21,22,23,24,26,33,34,35,37,39,40,41,47, 50,53,55,56,58,60,61,65,71,72)]
+colnames(lineardf) <- c("Province","State","TC","deaths","population","young","old","black","AIAN","Asian","NH","Hispanic","NHW","Female","Rural","Population.Density","Housing.Density","Sunlight","GDP","Poverty","Unemployed","Children.Poverty","Income.Inequality","Social","PM2.5","Water","SHP","sleep_hour","diabetes","heart_disease","obesity_age", "poorhealth","Unhealthy.Days","smokers","adult_obesity","excessive_drink","liver_crude_mortality","liver_Total_death","")
+
+lineardf$Poverty=as.numeric(lineardf$Poverty)
+lineardf$Water=as.factor(lineardf$Water)
+lineardf$sleep_hour<-as.numeric(as.character(lineardf$sleep_hour))
+lineardf$smokers<-as.numeric(as.character(lineardf$smokers))
+lineardf$adult_obesity<-as.numeric(as.character(lineardf$adult_obesity))
+lineardf$excessive_drink<-as.numeric(as.character(lineardf$excessive_drink))
+lineardf$liver_crude_mortality<-as.numeric(as.character(lineardf$liver_crude_mortality))
+lineardf$liver_Total_death<-as.numeric(as.character(lineardf$liver_Total_death))
+lineardf=lineardf %>% subset(deaths>0)
+lineardf=lineardf %>% subset(heart_disease>0)
+lineardf=lineardf %>% subset(obesity_age>0)
+lineardf=lineardf %>% subset(smokers>0)
+lineardf=lineardf %>% subset(diabetes>0)
+lineardf=lineardf %>% subset(sleep_hour>0)
+lineardf=lineardf %>% subset(adult_obesity>0)
+lineardf=lineardf %>% subset(excessive_drink>0)
+lineardf=lineardf %>% subset(liver_crude_mortality>0)
+lineardf=lineardf %>% subset(liver_Total_death>0)
+
+
+# subset(lassodf, TC != "NA")
+lineardf=na.omit(lineardf)
+
+```
+```{r,q10__,echo=F}
+loadPkg("leaps")
+reg.leaps1 <- regsubsets(deaths~., data = lineardf, nbest = 1, method = "exhaustive")  # leaps, 
+plot(reg.leaps1, scale = "bic", main = "BIC")
+plot(reg.leaps1, scale = "adjr2", main = "Adjusted R^2")
+
+
+
+```
+
+
+
+
 
 
 
