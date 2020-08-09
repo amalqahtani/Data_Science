@@ -762,7 +762,238 @@ sst1 <- sum((y_test - mean(y_test))^2)
 sse1 <- sum((lasso.pred - y_test)^2)
 rsq1 <- 1 - sse1 / sst1
 ```
+<<<<<<< HEAD
 We then calculate the R squared of lasso regression, which is `r rsq1`.
 
 # Bibliography 
 
+=======
+We then calculate the R squared of lasso regression, which is `r rsq1`.  
+
+# What prediction can you make with your model?
+
+```{r,disease3,echo=F}
+loadPkg("corrplot")
+disease4<-data[,c(1,2,7,8,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72)]
+names(disease4)[5:30] <- c("sleep_hour","sleep_hour_low","sleep_hour_high","diabetes","diabetes_male","diabetes_female","heart_disease","Hypertension","obesity_age","Poor_health","Physical_Unhealthy","Mentally_unhealthy","Low_birthweight","smokers","adult_obesity","Food_environment","Physically_inactive","Exercise_opportunity","excessive_drink","Uninsured","Preventable_Hospital","Mammogram","Flu_vaccinated","Respiratory","liver_crude_mortality","liver_Total_death")
+#disease<-data[,c(1,2,7,8,47,50,53,55,60,61,65,71,72)]
+disease3<-disease4[ , -which(colnames(disease4) %in% c("Province","total_cases"))]
+disease3$sleep_hour<-as.numeric(as.character(disease3$sleep_hour))
+disease3$sleep_hour_low<-as.numeric(as.character(disease3$sleep_hour_low))
+disease3$sleep_hour_high<-as.numeric(as.character(disease3$sleep_hour_high))
+disease3$diabetes<-as.numeric(as.character(disease3$diabetes))
+disease3$diabetes_male<-as.numeric(as.character(disease3$diabetes_male))
+disease3$diabetes_female<-as.numeric(as.character(disease3$diabetes_female))
+disease3$heart_disease<-as.numeric(as.character(disease3$heart_disease))
+disease3$Hypertension<-as.numeric(as.character(disease3$Hypertension))
+disease3$obesity_age<-as.numeric(as.character(disease3$obesity_age))
+disease3$Poor_health<-as.numeric(as.character(disease3$Poor_health))
+disease3$Physical_Unhealthy<-as.numeric(as.character(disease3$Physical_Unhealthy))
+disease3$Mentally_unhealthy<-as.numeric(as.character(disease3$Mentally_unhealthy))
+disease3$Low_birthweight<-as.numeric(as.character(disease3$Low_birthweight))
+disease3$smokers<-as.numeric(as.character(disease3$smokers))
+disease3$adult_obesity<-as.numeric(as.character(disease3$adult_obesity))
+disease3$Food_environment<-as.numeric(as.character(disease3$Food_environment))
+disease3$Physically_inactive<-as.numeric(as.character(disease3$Physically_inactive))
+disease3$Exercise_opportunity<-as.numeric(as.character(disease3$Exercise_opportunity))
+disease3$excessive_drink<-as.numeric(as.character(disease3$excessive_drink))
+disease3$Uninsured<-as.numeric(as.character(disease3$Uninsured))
+disease3$Preventable_Hospital<-as.numeric(as.character(disease3$Preventable_Hospital))
+disease3$Mammogram<-as.numeric(as.character(disease3$Mammogram))
+disease3$Flu_vaccinated<-as.numeric(as.character(disease3$Flu_vaccinated))
+disease3$Respiratory<-as.numeric(as.character(disease3$Respiratory))
+disease3$liver_crude_mortality<-as.numeric(as.character(disease3$liver_crude_mortality))
+disease3$liver_Total_death<-as.numeric(as.character(disease3$liver_Total_death))
+disease3=disease3 %>% subset(deaths>0)
+disease3=disease3 %>% subset(sleep_hour_low>0)
+disease3=disease3 %>% subset(sleep_hour_high>0)
+disease3=disease3 %>% subset(Low_birthweight>0)
+disease3=disease3 %>% subset(Food_environment>0)
+#disease3=disease3 %>% subset(deaths>0)
+#disease2=disease2 %>% subset(total_cases>0)
+disease3=disease3 %>% subset(heart_disease>0)
+disease3=disease3 %>% subset(obesity_age>0)
+disease3=disease3 %>% subset(smokers>0)
+disease3=disease3 %>% subset(diabetes>0)
+disease3=disease3 %>% subset(sleep_hour>0)
+disease3=disease3 %>% subset(adult_obesity>0)
+disease3=disease3 %>% subset(excessive_drink>0)
+disease3=disease3 %>% subset(liver_crude_mortality>0)
+disease3=disease3 %>% subset(liver_Total_death>0)
+disease5<-disease3[ , -which(colnames(disease3) %in% c("State"))]
+disease5_corr<-cor(disease5)
+#str(disease2)
+corrplot(disease5_corr, method="circle")
+```
+
+For the tempreture part: 
+```{r,temperature1,echo=F}
+temp<-data[,c(1,2,6,7,8,75,76,77)]
+names(temp)[3] <- c("days")
+names(temp)[6:8] <- c("temp_peak","temp_before","temp_current")
+str(temp)
+temp2<-temp[ , -which(colnames(temp) %in% c("Province","State"))]
+temp2<-temp[ , -which(colnames(temp) %in% c("Province","State"))]
+temp2=temp2 %>% subset(deaths>0)
+temp2=temp2 %>% subset(days>0)
+temp2=temp2 %>% subset(total_cases>0)
+temp2=temp2 %>% subset(temp_peak>0)
+temp2=temp2 %>% subset(temp_before>0)
+temp2=temp2 %>% subset(temp_current>0)
+temp2_corr<-cor(temp2)
+corrplot(temp2_corr,method="circle")
+corrplot.mixed(cor(temp2))
+```
+By the correlation diagorm, the temperature is less relate to total_cases and deaths. However, it is relate to the days. Which means the higher the temperature in the city, the later the disese occurs in this city. For prediction, the second peak is comming as earlier as the weather turns from summer to winter which means the temperature goes down. As the temperature becomes coders, the second peak of the spread comes earlier. 
+
+
+# How reliable are your results?
+
+```{r}
+loadPkg("pls")
+loadPkg("mice")
+loadPkg("ISLR")
+#Again we want to scale our data and "CV" stands for cross validation, which is defaulted to RMSE, using Hitters Data Set in the ISLR package 
+#Hitters2 <- disease5[,c("Salary","AtBat","Hits","HmRun","Runs","RBI","Walks","Assists","Errors")]
+disease3<-disease4[ , -which(colnames(disease4) %in% c("Province"))]
+disease3$sleep_hour<-as.numeric(as.character(disease3$sleep_hour))
+disease3$sleep_hour_low<-as.numeric(as.character(disease3$sleep_hour_low))
+disease3$sleep_hour_high<-as.numeric(as.character(disease3$sleep_hour_high))
+disease3$diabetes<-as.numeric(as.character(disease3$diabetes))
+disease3$diabetes_male<-as.numeric(as.character(disease3$diabetes_male))
+disease3$diabetes_female<-as.numeric(as.character(disease3$diabetes_female))
+disease3$heart_disease<-as.numeric(as.character(disease3$heart_disease))
+disease3$Hypertension<-as.numeric(as.character(disease3$Hypertension))
+disease3$obesity_age<-as.numeric(as.character(disease3$obesity_age))
+disease3$Poor_health<-as.numeric(as.character(disease3$Poor_health))
+disease3$Physical_Unhealthy<-as.numeric(as.character(disease3$Physical_Unhealthy))
+disease3$Mentally_unhealthy<-as.numeric(as.character(disease3$Mentally_unhealthy))
+disease3$Low_birthweight<-as.numeric(as.character(disease3$Low_birthweight))
+disease3$smokers<-as.numeric(as.character(disease3$smokers))
+disease3$adult_obesity<-as.numeric(as.character(disease3$adult_obesity))
+disease3$Food_environment<-as.numeric(as.character(disease3$Food_environment))
+disease3$Physically_inactive<-as.numeric(as.character(disease3$Physically_inactive))
+disease3$Exercise_opportunity<-as.numeric(as.character(disease3$Exercise_opportunity))
+disease3$excessive_drink<-as.numeric(as.character(disease3$excessive_drink))
+disease3$Uninsured<-as.numeric(as.character(disease3$Uninsured))
+disease3$Preventable_Hospital<-as.numeric(as.character(disease3$Preventable_Hospital))
+disease3$Mammogram<-as.numeric(as.character(disease3$Mammogram))
+disease3$Flu_vaccinated<-as.numeric(as.character(disease3$Flu_vaccinated))
+disease3$Respiratory<-as.numeric(as.character(disease3$Respiratory))
+disease3$liver_crude_mortality<-as.numeric(as.character(disease3$liver_crude_mortality))
+disease3$liver_Total_death<-as.numeric(as.character(disease3$liver_Total_death))
+disease3=disease3 %>% subset(deaths>0)
+disease3=disease3 %>% subset(sleep_hour_low>0)
+disease3=disease3 %>% subset(sleep_hour_high>0)
+disease3=disease3 %>% subset(Low_birthweight>0)
+disease3=disease3 %>% subset(Food_environment>0)
+#disease3=disease3 %>% subset(deaths>0)
+#disease2=disease2 %>% subset(total_cases>0)
+disease3=disease3 %>% subset(heart_disease>0)
+disease3=disease3 %>% subset(obesity_age>0)
+disease3=disease3 %>% subset(smokers>0)
+disease3=disease3 %>% subset(diabetes>0)
+disease3=disease3 %>% subset(sleep_hour>0)
+disease3=disease3 %>% subset(adult_obesity>0)
+disease3=disease3 %>% subset(excessive_drink>0)
+disease3=disease3 %>% subset(liver_crude_mortality>0)
+disease3=disease3 %>% subset(liver_Total_death>0)
+disease5<-disease3[ , -which(colnames(disease3) %in% c("State"))]
+disease_c<-disease5[,c(1,2,3,9,15,17,18,26,28)]
+#disease_a<-data[,c(7,8,47,53,59,61,62,70,72)]
+pcr.fit=pcr(deaths~.,data=disease_c,scale=TRUE,validation ="CV")
+head(disease_c)
+summary(pcr.fit)
+```
+```{r, results='show', include=T}
+pcr.fit$coefficients[1:8,1,'1 comps'] # only one coefficient for PC1, but expressed in the original variables coefficients.
+pcr.fit$coefficients[1:8,1,'3 comps'] # three coefficients for PC1, PC2, and PC3, but expressed in the original variables coefficients.
+# 
+pcr.fit$fitted.values[1:8,1,'1 comps'] # the fitted values. Showing only the first five here.
+```
+```{r}
+pcr.fit$fitted.values[1:5,1,'3 comps']
+```
+
+```{r PCA_PCR_xform_fcns}
+PCAxform <- function(df, z=TRUE) { 
+  #' Obtain the dataframe with the Principal Components after the rotation. 
+  #' ELo 201911 GWU DATS
+  #' @param df The dataframe.
+  #' @param z T/F or 0/1 for z-score to be used
+  #' @return The transformed dataframe.
+  #' @examples
+  #' tmp = PCAxform(USArrests,TRUE)
+
+  z = ifelse(z==TRUE || z=="true" || z=="True" || z=="T" || z=="t" || z==1 || z=="1", TRUE, FALSE) # standardize z 
+  if(z) { df = data.frame(scale(df))}  # scale not safe for non-numeric colunms, but PCA requires all variables numerics to begin with.
+  pr.out = prcomp(df,scale=z)
+  df1 = data.frame( as.matrix(df) %*% pr.out$rotation ) # use matrix multiplication in R:  %*% 
+  return(df1)
+}
+# Sample 
+# USArrests.z.pc = PCAxform(USArrests,TRUE)
+# summary(USArrests.z.pc)
+
+
+PCRxform <- function(df, y, zX=TRUE, zy=FALSE) { 
+  #' Obtain the dataframe with the Principal Components after the rotation for PCRegression. Requires related function PCAxform()
+  #' ELo 201903 GWU DATS
+  #' @param df The dataframe.
+  #' @param y The y-variable column index number(int), or the name of y-variable
+  #' @param zX T/F or 0/1 for z-score used on X-variables
+  #' @param zy T/F or 0/1 for z-score used on the target y-variable
+  #' @return The transformed dataframe.
+  #' @examples
+  #' tmp = PCAxform(USArrests,TRUE)
+
+  # take care of y target
+  zy = ifelse(zy==TRUE || zy=="true" || zy=="True" || zy=="T" || zy=="t" || zy==1 || zy=="1", TRUE, FALSE) # standardize target y
+  if( is.integer(y) ) { # y is integer
+    if( y>length(df) || y<1 ) {
+      print("Invalid column number")
+      return(NULL)
+    }
+    if(zy) { df1 = data.frame( scale(df[y]) ) } else { df1 = df[y] } # save y-var in df1
+    df = df[-y] # remove y-variable in df
+  } else { # y is not integer, so interpret as name
+    if(zy) { df1 = data.frame( scale( df[names(df) == y] ) ) } else { df1 = df[names(df) == y] }
+    df = df[names(df) != y] # remove y-variable in df
+  }
+  if( length(df1)<1 ) {
+    print("Variable name not found in data.frame")
+    return(NULL)
+  }
+  # now transform X-vars
+  zX = ifelse(zX==TRUE || zX=="true" || zX=="True" || zX=="T" || zX=="t" || zX==1 || zX=="1", TRUE, FALSE) # standardize X-vars 
+  df2 = PCAxform(df,zX)
+  df1 = data.frame(df1,df2) # piece them back together
+  return(df1)
+}
+# Sample 
+# USArrests.z.pcr = PCRxform(USArrests,3,TRUE) # OR
+# USArrests.z.pcr = PCRxform(USArrests,"UrbanPop",TRUE) 
+# summary(USArrests.z.pcr)
+
+```
+
+```{r}
+#disease_c<-disease5[1,2,8,14,16,17,25,27]
+Hitters2scaled = data.frame(scale(disease_c))
+Hitters2scaled.pc.v3 = PCRxform(Hitters2scaled,"deaths",TRUE) 
+head(Hitters2scaled.pc.v3)
+biplot(pcr.fit, scale = 0)
+#pr.var <- (pcr.fit$sdev^2)
+#pve <- pr.var/sum(pr.var)
+#plot(cumsum(pve), xlab="Principal Component (standardized)", ylab ="Cumulative Proportion of Variance Explained",ylim=c(0,1),type="b",xlim=c(-2,20))
+```
+```{r}
+validationplot(pcr.fit ,val.type="MSEP",legend="topright")
+```
+For the linear model with death  relate to diesase, I add the total cases as the correlation of death and total cases are autocorrelate. by the Principle Component Method, drawing the cross-validation line and compare the MSEP of the death to the significant disease. The nuber of components drops down when number of components reach to two, which means the pc1 and pc2 can highliy explain the model. This shows the reliable of the the model is good enough. 
+
+# What additional information or analysis might improve your model results or work to control limitations?
+
+The random forest test: easy to understand and interpret. Insensitive to outliers, which means no need to remove the outliers Also, this method is effective on handling the missing data. Low operation computation and require little data pre-processing. It is suit out large datasets with thoungs of rows and missing data. However, as the trees becomg too large, the dificulty of interpret will increase. The variance of tree method is high and performance is low. The model can easily overfitting. 
+Also, the data is not perfect enough to predict death rate since it is outdated. This data last update from April and death number increase a lot since June till now. Also, there are lots of missing data especially for the disease. Only around 20 stats out of 51 have fully record of disease history of patients.These reasons make the available anlaysis data drops down from 3000 rows to 1000 rows. After deleate the missing data Because the COV-19 disease is not a fatal disease and patient will fight with disease for a long time till death. Also, the death of COV-19 is not complete, since many potential patient dead by COV-19 but counted as normal Flu. Also some important category was not in part of the analysis such as blood type.
+>>>>>>> e25ada29a157036f0a48ff1b222a7a319909b9db
