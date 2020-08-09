@@ -411,7 +411,7 @@ Before_ttest99
 After_ttest99 = t.test(x = After_order$total_cases, conf.level = 0.99)
 After_ttest99
 ```
-Before first case have stay at home order 80% & 99% confidence interval is not overlap with after first case have stay at home order. As a result, the average Total Cases infected number is different from separate groups that the Stay at Home Policy is order before the First Case or not.
+Before first case have stay at home order 80% & 99% confidence interval does not overlap with after first case have stay at home order. As a result, the average Total Cases infected number is different from separate groups that the Stay at Home Policy is order before the First Case or not.
 
 ### Is the stay at home policy after the first case related to the people inflected number?
 ```{r,box_plot,echo=F}
@@ -426,7 +426,7 @@ ggplot(data = After_order, aes(x=first_case, y=total_cases))+
 #str(stay_at_home)
 ```
 
-For these two box-plot diagoram, the Total Cases infected are more higher if the Stay at Home Policy is ordered After the first cases. So we can say the Stay at Home Policy do decrease the Totall Cases inflected if it is ordered before the Fist Case happened. 
+For these two box-plot diagrams, the Total Cases infected are higher if the Stay at Home Policy is ordered After the first cases. Thus, we can say the Stay at Home Policy do decrease the Total Cases inflected if it is ordered before the First Case occurred. 
 
 
 ## Underlying Health Conditions
@@ -467,7 +467,7 @@ corrplot(disease2_corr,method="circle")
 ```
 
 
-It shows liver_total_death is highly correlated to deaths at correlation = 0.4338.
+This shows liver_total_death is highly correlated to deaths at correlation = 0.4338.
 
 ## Impact of Temperature
 
@@ -495,7 +495,7 @@ loadPkg("corrplot")
 corrplot(temp2_corr,method="circle")
 ```
 
-By the correlation diagorm, the temperature is less relate to total_cases and deaths. 
+According to the correlation diagram, the temperature is less relate to total_cases and deaths. 
 
 ```{r}
 #sum(is.na(df2$TC))
@@ -548,7 +548,7 @@ It shows that the proportion of elderly people over 65 years old is different in
 ggplotly(ggplotly(ggplot(df2, aes(x=rank, y=young, fill=rank)) + geom_boxplot() + scale_fill_brewer(palette="Spectral") + ggtitle("proportion of youth under 18 vs. Total cases") + ylab("proportion of youth under 18") + xlab("Total cases") +  theme(plot.title= element_text(hjust=0.5, size = 14))))
 ```
 
-It is difficult to see whether the two are related from the image.
+It is difficult to determine whether the two variable are related from the figure.
 
 ```{r young bptest,echo=F}
 test2 <- bptest(df2$young~rank)
@@ -619,6 +619,8 @@ Places with a larger proportion of poor people have more TC. However, in regions
 
 
 # How did you select and determine the correct model to answer your question?
+
+Below is how we selected and determined the correct model to answer the question. 
 
 ## Linear model
 ```{r}
@@ -767,8 +769,6 @@ rsq1 <- 1 - sse1 / sst1
 <<<<<<< HEAD
 We then calculate the R squared of lasso regression, which is `r rsq1`.
 
-# Bibliography 
-
 =======
 We then calculate the R squared of lasso regression, which is `r rsq1`.  
 
@@ -846,7 +846,7 @@ temp2_corr<-cor(temp2)
 corrplot(temp2_corr,method="circle")
 corrplot.mixed(cor(temp2))
 ```
-By the correlation diagorm, the temperature is less relate to total_cases and deaths. However, it is relate to the days. Which means the higher the temperature in the city, the later the disese occurs in this city. For prediction, the second peak is comming as earlier as the weather turns from summer to winter which means the temperature goes down. As the temperature becomes coders, the second peak of the spread comes earlier. 
+According to the correlation diagram, the temperature is less related to total_cases and deaths. However, it does relate to the variable, days. This means the higher the temperature in the city, the later the disease occurs in this city. For prediction, the second peak is coming as earlier as the weather turns from summer to winter which means the temperature goes down. As the temperature becomes colder, the second peak of the spread comes earlier. 
 
 
 # How reliable are your results?
@@ -992,7 +992,7 @@ biplot(pcr.fit, scale = 0)
 ```{r}
 validationplot(pcr.fit ,val.type="MSEP",legend="topright")
 ```
-For the linear model with death  relate to diesase, I add the total cases as the correlation of death and total cases are autocorrelate. by the Principle Component Method, drawing the cross-validation line and compare the MSEP of the death to the significant disease. The nuber of components drops down when number of components reach to two, which means the pc1 and pc2 can highliy explain the model. This shows the reliable of the the model is good enough. 
+For the linear model with death related to disease, I added the total cases as the correlation of death and total cases are autocorrelate. by the Principle Component Method, drawing the cross-validation line and compare the MSEP of the death to the significant disease. The nuber of components drops down when number of components reach to two, which means the pc1 and pc2 can highliy explain the model. This shows the reliable of the the model is good enough. 
 
 # What additional information or analysis might improve your model results or work to control limitations?
 
