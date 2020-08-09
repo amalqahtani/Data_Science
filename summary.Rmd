@@ -762,4 +762,7 @@ sst1 <- sum((y_test - mean(y_test))^2)
 sse1 <- sum((lasso.pred - y_test)^2)
 rsq1 <- 1 - sse1 / sst1
 ```
-We then calculate the R squared of lasso regression, which is `r rsq1`.  
+We then calculate the R squared of lasso regression, which is `r rsq1`.
+
+# Bibliography 
+
