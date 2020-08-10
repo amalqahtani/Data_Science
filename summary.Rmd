@@ -189,12 +189,13 @@ outlierKD2 <- function(df, var, rm=FALSE) {
 Team A are the following members: Amal Alqahtani, Jiaxiang Peng, Naureen Elahi, and Xinya Mu. You may find our work over on GitHub.
 
 Novel Coronavirus is a contagious respiratory virus that first started in Wuhan in December 2019. On 2/11/2020, the disease is officially named COVID-19 by the World Health Organization (WHO). To date, the CDC states there are a total of 4,542, 579 cases and 152, 870 deaths in the United States (Cases in U.S, 2020). Many risk factors have been hypothesized to affect the case and death rates from the virus.
+
 We felt that a relevant discussion to have would be What are the most regions with the highest number of deaths? What can we say about patient demographics? Is race considered a significant risk factor for increased COVID-19 incidence in the United States?’ Are there any general trends amongst underlying health conditions? These questions are all suited to Exploratory Data Analysis (EDA), and with these questions in mind, we want to see if we could find data on COVID-19 that would be readily available for us to analyze. Eventually, our question morphed into the following: What are the factors (i.e. patient demographics, social determinants of health, environmental variables, underlying health conditions, country of origin) affecting 
 COVID-19 numbers of cases and death rate among different geographical locations in US?
 
 For this project, we used a public dataset called Covid-19 on Github over here: https://github.com/johndurbin93/Covid-19-Dataset 
 
-## What do you know about this dataset
+## What do you know about this dataset?
 
 The data looks like the following:
 
@@ -280,9 +281,9 @@ data_noNA = na.omit(small_df)
 str(data_noNA)
 ```
 
-## How it was gathered ?
+## How it was gathered?
 
-This dataset was collected using publicly available data sources (cite : https://www.medrxiv.org/content/10.1101/2020.04.17.20069708v2). It includes COVID-19 confirmed case number and death number through April 14, 2020  which were obtained for each U.S. county from the Center for Systems Science and Engineering (CSSE) Coronavirus Resource Center at Johns Hopkins University. Race demographics for counties was obtained from the County Health Rankings and Roadmaps Program database. Daily temperature data for counties was obtained from the National Oceanic and Atmospheric Administration. County temperature was calculated using mean temperature for a period starting 10 days before the first confirmed county case and through the most current date (April 14, 2020). Unacast social distancing data was obtained through a research agreement with the company (cite : https://www.medrxiv.org/content/10.1101/2020.04.17.20069708v2). The following table shows the sources for each factor. 
+This data set was collected using publicly available data sources (Li et al., 2020). It includes COVID-19 confirmed case and death numbers through April 14, 2020,  which were obtained for each U.S. county from the Center for Systems Science and Engineering (CSSE) Coronavirus Resource Center at Johns Hopkins University. Race demographics for counties was obtained from the County Health Rankings and Roadmaps Program database. Daily temperature data for counties was obtained from the National Oceanic and Atmospheric Administration. County temperature was calculated using mean temperature for a period starting 10 days before the first confirmed county case and through the most current date (April 14, 2020). Unacast social distancing data was obtained through a research agreement with the company (Li et al., 2020). The following table shows the sources for each factor. 
 
 ## What analysis has already been completed related to the content in your dataset? 
 
