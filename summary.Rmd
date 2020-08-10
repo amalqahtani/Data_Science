@@ -283,7 +283,7 @@ data_noNA = na.omit(small_df)
 
 ## How it was gathered ?
 
-This data set was collected using publicly available data sources (Li et al., 2020). It includes COVID-19 confirmed case and death numbers through April 14, 2020  which were obtained for each U.S. county from the Center for Systems Science and Engineering (CSSE) Coronavirus Resource Center at Johns Hopkins University. Race demographics for counties was obtained from the County Health Rankings and Roadmaps Program database. Daily temperature data for counties was obtained from the National Oceanic and Atmospheric Administration. County temperature was calculated using mean temperature for a period starting 10 days before the first confirmed county case and through the most current date (April 14, 2020). Unacast social distancing data was obtained through a research agreement with the company (Li et al., 2020). The following table shows the sources for each factor. 
+This data set was collected using publicly available data sources (Li et al., 2020). It includes COVID-19 confirmed case and death numbers through April 14, 2020  which were obtained for each U.S. county from the Center for Systems Science and Engineering (CSSE) Coronavirus Resource Center at Johns Hopkins University. Race demographics for counties was obtained from the County Health Rankings and Roadmaps Program database. Daily temperature data for counties was obtained from the National Oceanic and Atmospheric Administration. County temperature was calculated using mean temperature for a period starting 10 days before the first confirmed county case and through the most current date (April 14, 2020). Unacast social distancing data was obtained through a research agreement with the company (Li et al., 2020). The following table shows the sources for each factor (Li et al., 2020).  
 
 ```{r pressure, echo=FALSE, fig.cap="Information of data", out.width = '100%'}
 knitr::include_graphics("p1.png")
@@ -291,7 +291,8 @@ knitr::include_graphics("p1.png")
 
 
 ## What are the limitations of the dataset?
-There are many limitations to this data set. In fact, this data set does not represent the entire States of the US since it only includes the counties with sufficient data. Hence, many counties were excluded from the analysis for lack of COVID-19 cases or lack of COVID-19 deaths. Another limitation is that the COVID-19 pandemic is still in progress and the last date that the data set was collected was April 14, 2020. This means that the data of all included counties in this data set is at different stages which may not reflect the ultimate case and death tolls in these counties. 
+
+There are many limitations to this data set. In fact, this data set does not represent the entire States of the US since it only includes the counties with sufficient data. Hence, many counties were excluded from the analysis for lack of COVID-19 cases or lack of COVID-19 deaths. Another limitation is that the COVID-19 pandemic is still ongoing and the last date that the data set was collected was April 14, 2020. This means that the data of all included counties in this data set is at different stages which may not reflect the ultimate case and death tolls in these counties. 
 
 
 ## What analysis has already been completed related to the content in your dataset? 
@@ -1068,7 +1069,7 @@ biplot(pcr.fit, scale = 0)
 ```{r} 
 validationplot(pcr.fit ,val.type="MSEP",legend="topright")
 ```
-For the linear model with death related to disease, I added the total cases as the correlation of death and total cases are autocorrelate. By the Principle Component Method,  we draw the cross-validation line and compare the MSEP of the death to the significant disease. The number of components drops down when number of components reach to two, which means the pc1 and pc2 can highly explain the model. This shows the reliability of the the model is sufficient.
+For the linear model with death related to disease, I added the total cases as the correlation of death and total cases are autocorrelate. By the Principle Component Method,  we draw the cross-validation line and compare the MSEP of the death to the significant disease. The number of components drops down when the number of components reach to two, which means the pc1 and pc2 can highly explain the model. This shows the reliability of the the model is sufficient.
 
 ## What additional information or analysis might improve your model results or work to control limitations?
 
@@ -1080,7 +1081,7 @@ In addition, the data is not perfect enough to predict death rate since it is ou
 
 After conducting our EDA analysis and models, we came to several conclusions on what factors could have an impact on the number of cases and death rate due to COVID-19. First, we found a signicant relation of population density; the higher population density, the increased number of cases. This may be because more people may go out in crowded areas or take public transportation, which could lead to more exposure to the disease. Ethnicity also had an effect on the number of cases and death rates. Looking more closely into this variable, we saw that the top three races with an impact were black, asian, and hispanic, which are all minority races. Minorities tend to have predisposed conditions that may lead to more exposure to the disease, thus increase the number of cases and deaths. Examples include social determinants of health and lack of access to care. Another factor was rural areas and confirmed cases. Those patients in these areas may have higher rates of a chronic disease that were not tested in this dataset that could have an association with getting COVID-19. People in rural areas also face social inequities and social determinants of health that could lead to an increased exposure to the disease. Age was also shown to have an impact on the number of cases. The younger generation may be going out more, not follow enforcement or mandate polices, and have a mindset they are invulnerable to the diease, which all lead to increased exposure to the diaease. A couple of other variables shown to have an impact on the number of cases were gender and liver-total-death. 
 
-In the linear model, we found that the coefficient of % Severe Housing Problems and Sleep <7 Hours_Percent is positive, indicating that the less sleep time and housing problems in a region, the higher the mortality rate. Sleep time may affect health condition, and good housing conditions can ensure that people can minimize exposure to the virus.
+In the linear model, we found that the coefficient of % Severe Housing Problems and Sleep <7 Hours_Percent is positive, indicating that the less sleep time and housing problems there is in a region, the higher the mortality rate will be. Sleep time may affect health conditions, and good housing conditions can ensure that people can minimize exposure to the virus. 
 
 # Bibliography 
 Assessing Risk Factors for Severe COVID-19 Illness. (n.d.). Retrieved August 09, 2020, from https://www.cdc.gov/coronavirus/2019-ncov/covid-data/investigations-discovery/assessing-risk-factors.html
