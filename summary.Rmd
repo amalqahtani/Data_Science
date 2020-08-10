@@ -281,7 +281,7 @@ data_noNA = na.omit(small_df)
 # str(data_noNA)
 ```
 
-## How it was gathered ?
+## How it was gathered?
 
 This data set was collected using publicly available data sources (Li et al., 2020). It includes COVID-19 confirmed case and death numbers through April 14, 2020  which were obtained for each U.S. county from the Center for Systems Science and Engineering (CSSE) Coronavirus Resource Center at Johns Hopkins University. Race demographics for counties was obtained from the County Health Rankings and Roadmaps Program database. Daily temperature data for counties was obtained from the National Oceanic and Atmospheric Administration. County temperature was calculated using mean temperature for a period starting 10 days before the first confirmed county case and through the most current date (April 14, 2020). Unacast social distancing data was obtained through a research agreement with the company (Li et al., 2020). The following table shows the sources for each factor (Li et al., 2020).  
 
