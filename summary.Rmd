@@ -184,6 +184,7 @@ outlierKD2 <- function(df, var, rm=FALSE) {
 # outlierKD2(mlb, weight) # same as above, as the last argument is optional, default = FALSE 
 ```
 ![](covid19.png)
+
 # Introduction: 
 
 Team A are the following members: Amal Alqahtani, Jiaxiang Peng, Naureen Elahi, and Xinya Mu. You may find our work over on GitHub.
