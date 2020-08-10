@@ -187,7 +187,7 @@ outlierKD2 <- function(df, var, rm=FALSE) {
 
 # Introduction: 
 
-Team A are the following members: Amal Alqahtani, Jiaxiang Peng, Naureen Elahi, and Xinya Mu. You may find our work over on GitHub.
+Team A are the following members: Amal Alqahtani, Jiaxiang Peng, Naureen Elahi, and Xinya Mu. You may find our work over on GitHub[https://github.com/amalqahtani/Data_Science].
 
 Novel Coronavirus is a contagious respiratory virus that first started in Wuhan in December 2019. On 2/11/2020, the disease was officially named COVID-19 by the World Health Organization (WHO). To date, the CDC states there are a total of 4,542, 579 cases and 152, 870 deaths in the United States (Cases in U.S, 2020). Many risk factors have been hypothesized to affect the case and death rates from the virus.
 
