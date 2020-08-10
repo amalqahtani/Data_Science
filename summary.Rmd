@@ -183,7 +183,7 @@ outlierKD2 <- function(df, var, rm=FALSE) {
 # outlierKD2(mlb, weight, FALSE) # This will NOT remove weight outliers, but it will show the charts with and without outliers nonetheless. 
 # outlierKD2(mlb, weight) # same as above, as the last argument is optional, default = FALSE 
 ```
-
+![](covid19.png)
 # Introduction: 
 
 Team A are the following members: Amal Alqahtani, Jiaxiang Peng, Naureen Elahi, and Xinya Mu. You may find our work over on GitHub.
@@ -277,12 +277,19 @@ To prepare our data for EDA we clean the dataset and remove all NAs.
 
 #Drops rows containing missing values in any variable:
 data_noNA = na.omit(small_df)
-str(data_noNA)
+# str(data_noNA)
 ```
 
 ## How it was gathered ?
 
 This dataset was collected using publicly available data sources (cite : https://www.medrxiv.org/content/10.1101/2020.04.17.20069708v2). It includes COVID-19 confirmed case number and death number through April 14, 2020  which were obtained for each U.S. county from the Center for Systems Science and Engineering (CSSE) Coronavirus Resource Center at Johns Hopkins University. Race demographics for counties was obtained from the County Health Rankings and Roadmaps Program database. Daily temperature data for counties was obtained from the National Oceanic and Atmospheric Administration. County temperature was calculated using mean temperature for a period starting 10 days before the first confirmed county case and through the most current date (April 14, 2020). Unacast social distancing data was obtained through a research agreement with the company (cite : https://www.medrxiv.org/content/10.1101/2020.04.17.20069708v2). The following table shows the sources for each factor. 
+
+
+
+## What are the limitations of the dataset?
+There are many limitations to this dataset. In fact, this dataset does not represent the entire States of the US since it only includes only the counties with sufficient data. Hence, many counties were excluded from analysis for lack of Covid-19 cases or lack of Covid-19 deaths. 
+Another limitation is that the COVID-19 pandemic is still in progress and the last date that the dataset was collected was April 14, 2020. This means that the data of all included counties in this dataset is at different stages which may not reflect the ultimate case and death tolls in these counties. 
+
 
 ## What analysis has already been completed related to the content in your dataset? 
 
@@ -293,6 +300,10 @@ COVID-19 still remains a mystery and since the virus is still relatively recent 
 Our group was interested in looking further into data related to COVID-19 because it was a very timely and relevant topic as we are living in this new normal. Before researching what data sets were out there, we brainstormed possible COVID-19 topics we could begin to delve in. A few of those topics discussed were hospital utilization during COVID-19, policy, and testing. We each found data sets that could be best related to the topics we have discussed and chose the one that best fit the requirements for our project.
 
 After reviewing our chosen data set and having background knowledge that there are factors that impact the death rate and total cases cases, we chose our ultimate SMART question, “What are factors that lead to an increase in COVID-19 cases and death rates?” After learning more about the virus and potential factors, we understood that risk factors like health conditions, race, age, adherence to policies, and etc. could have an impact on the total cases of COVID-19. Our question also originally derived from pure curiosity, since we did have knowledge on the virus beforehand. We wanted to find the answers to our SMART question ourselves from our own data analysis. However, with the information that we did know, we came up with sub-questions, which will be further discussed later on, to help determine our final SMART question and make sure our final question was able to be determined through the variables in our data set. 
+
+```{r pressure, echo=FALSE, fig.cap="Information of data", out.width = '100%'}
+knitr::include_graphics("p1.png")
+```
 
 ## What additional information would have been beneficial? 
 
