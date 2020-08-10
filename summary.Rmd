@@ -189,8 +189,9 @@ outlierKD2 <- function(df, var, rm=FALSE) {
 
 Team A are the following members: Amal Alqahtani, Jiaxiang Peng, Naureen Elahi, and Xinya Mu. You may find our work over on GitHub.
 
-Novel Coronavirus is a contagious respiratory virus that first started in Wuhan in December 2019. On 2/11/2020, the disease is officially named COVID-19 by the World Health Organization (WHO). To date, the CDC states there are a total of 4,542, 579 cases and 152, 870 deaths in the United States (Cases in U.S, 2020). Many risk factors have been hypothesized to affect the case and death rates from the virus.
-We felt that a relevant discussion to have would be What are the most regions with the highest number of deaths? What can we say about patient demographics? Is race considered a significant risk factor for increased COVID-19 incidence in the United States?’ Are there any general trends amongst underlying health conditions? These questions are all suited to Exploratory Data Analysis (EDA), and with these questions in mind, we want to see if we could find data on COVID-19 that would be readily available for us to analyze. Eventually, our question morphed into the following: What are the factors (i.e. patient demographics, social determinants of health, environmental variables, underlying health conditions, country of origin) affecting 
+Novel Coronavirus is a contagious respiratory virus that first started in Wuhan in December 2019. On 2/11/2020, the disease was officially named COVID-19 by the World Health Organization (WHO). To date, the CDC states there are a total of 4,542, 579 cases and 152, 870 deaths in the United States (Cases in U.S, 2020). Many risk factors have been hypothesized to affect the case and death rates from the virus.
+
+We felt that a relevant discussion needed would be: What are the most regions with the highest number of deaths? What can we say about patient demographics? Is race considered a significant risk factor for increased COVID-19 incidence in the United States?’ Are there any general trends amongst underlying health conditions? These questions are all suited to Exploratory Data Analysis (EDA), and with these questions in mind, we want to see if we could find data on COVID-19 that would be readily available for us to analyze. Eventually, our question morphed into the following: What are the factors (i.e. patient demographics, social determinants of health, environmental variables, underlying health conditions, country of origin) affecting 
 COVID-19 numbers of cases and death rate among different geographical locations in US?
 
 For this project, we used a public dataset called Covid-19 on Github over here: https://github.com/johndurbin93/Covid-19-Dataset 
@@ -297,17 +298,17 @@ There are many limitations to this data set. In fact, this data set does not rep
 
 ## What analysis has already been completed related to the content in your dataset? 
 
-COVID-19 still remains a mystery and since the virus is still relatively recent and foreign, we were expecting there to be multiple data analyses to better understand and monitor the virus. Looking online, we found various research studies related to the virus. In the Journal of Medical Sciences, there was a multivariate analysis study that compared risk factors to COVID-19 case and death rates while accounting for confounding factors. This group stated that there are risk factors that are hypothesized to have an effect on COVID-19 case and death rates, which includes underlying health conditions, adherence to social distancing protocols, social determinants of health, and patient demographics. This study focused on U.S counties, which was similar to our data set. From their study, they concluded that race, specifically Black, was a risk factor for increased COVID-19 case and death rates independent of other factors, such as poverty level or access to health care. Temperature was also shown to have an effect on total cases, but not death rate. Areas with higher average daily temperature showed a decrease in the total number of COVID-19 cases. (Li et al., 2020). In addition, the CDC conducted surveillance and investigations on why some people are more likely to develop the disease than others. The potential risk factors CDC noted are race/ethnicity, gender, medical conditions, poverty and crowding, occupation, and pregnancy. (Assessing Risk Factors for Severe COVID-19 Illness, nd). 
+COVID-19 still remains a mystery and since the virus is still relatively recent and foreign, we were expecting there to be multiple data analyses to better understand and monitor the virus. Looking online, we found various research studies related to the virus. In the Journal of Medical Sciences, there was a multivariate analysis study that compared risk factors to COVID-19 case and death rates while accounting for confounding factors. This study stated that there are risk factors that are hypothesized to have an effect on COVID-19 case and death rates, which includes underlying health conditions, adherence to social distancing protocols, social determinants of health, and patient demographics. This study focused on U.S counties, which was similar to our data set. From their study, they concluded that race, specifically Black, was a risk factor for increased COVID-19 case and death rates independent of other factors, such as poverty level or access to health care. Temperature was also shown to have an effect on total cases, but not death rate. Areas with higher average daily temperature showed a decrease in the total number of COVID-19 cases. (Li et al., 2020). In addition, the CDC conducted surveillance and investigations on why some people are more likely to develop the disease than others. The potential risk factors CDC noted are race/ethnicity, gender, medical conditions, poverty and crowding, occupation, and pregnancy. (Assessing Risk Factors for Severe COVID-19 Illness, nd). 
 
 ## How did the research you gathered contribute to your question development?
 
 Our group was interested in looking further into data related to COVID-19 because it was a very timely and relevant topic as we are living in this new normal. Before researching what data sets were out there, we brainstormed possible COVID-19 topics we could begin to delve in. A few of those topics discussed were hospital utilization during COVID-19, policy, and testing. We each found data sets that could be best related to the topics we have discussed and chose the one that best fit the requirements for our project.
 
-After reviewing our chosen data set and having background knowledge that there are factors that impact the death rate and total cases cases, we chose our ultimate SMART question, “What are factors that lead to an increase in COVID-19 cases and death rates?” After learning more about the virus and potential factors, we understood that risk factors like health conditions, race, age, adherence to policies, and etc. could have an impact on the total cases of COVID-19. Our question also originally derived from pure curiosity, since we did have knowledge on the virus beforehand. We wanted to find the answers to our SMART question ourselves from our own data analysis. However, with the information that we did know, we came up with sub-questions, which will be further discussed later on, to help determine our final SMART question and make sure our final question was able to be determined through the variables in our data set. 
+After reviewing our chosen data set and having background knowledge that there are indeed factors that could impact the death rate and total cases cases, we chose our ultimate SMART question, “What are factors that lead to an increase in COVID-19 cases and death rates?” After learning more about the virus and potential factors, we understood that risk factors like health conditions, race, age, adherence to policies, and etc. could have an impact on the total cases of COVID-19. Our question also originally derived from pure curiosity, since we did have knowledge on the virus beforehand. We wanted to find the answers to our SMART question ourselves from our own data analysis. With the information that we did know, we came up with sub-questions, which will be further discussed later on, to help determine our final SMART question and make sure our final question was able to be determined through the variables in our data set. 
 
 ## What additional information would have been beneficial? 
 
-Additional information in our data set could have been beneficial to aid our analysis. For example, it would have been helpful to have testing information for each city and not by state as in the data set. This variable was not consistent with the rest of the data collection in the set. It also would have been beneficial to have ongoing data, rather than it ending in April to have the most updated data. Since scientists are finding new information on COVID-19 as time goes on, our results could have been more relevant or have more significance to the situation if we had more recent data because the results may have shown different conclusions. It also may have been more helpful to have information on what each variable specifically is in the data set, such as in a guide, to prevent any guess work. 
+Additional information in our data set could have been beneficial to aid our analysis. For example, it would have been helpful to have testing information for each city and not by state as in the data set. This variable was not consistent with the rest of the data collection in the set. It also would have been beneficial to have ongoing data, rather than it ending in April to have the most updated data. Since scientists are finding new information on COVID-19 as time goes on, our results could have been more relevant if we had more recent data because the results may have shown different conclusions. It also may have been more helpful to have information on what each variable specifically is in the data set, such as in a guide, to prevent any guess work. 
 
 # EDA Part
 ## How did your question change, if at all, after EDA?
@@ -329,7 +330,7 @@ Finally, we deleted the question "Are there any common underlying health conditi
 
 #### What are the top 15 Provinces based on the number of cases?
 
-The following bar chart shows the top 15 cities by number of Covid-19 cases. 
+The following bar chart shows the top 15 cities by number of COVID-19 cases. 
 
 ```{r top_10_cases, echo=F}
  library(ggplot2)
@@ -345,7 +346,7 @@ The following bar chart shows the top 15 cities by number of Covid-19 cases.
   
 ```
 
-The above Bar chart shows the top 15 provinces determined by the number of cases. New York province is highest city with number of Covid-19 cases, the total number is over 100000, while the number of cases in other cities  is less than 30000. 
+The above Bar chart shows the top 15 provinces determined by the number of cases. New York province is highest city with number of COVID-19 cases, the total number is over 100000, while the number of cases in other cities  is less than 30000. 
 
 
 #### What are the top 15 Provinces based on the number of deaths?
@@ -506,7 +507,7 @@ ggplot(data = After_order, aes(x=first_case, y=total_cases))+
 #str(stay_at_home)
 ```
 
-For these two box-plot diagrams, the Total Cases infected are higher if the Stay at Home Policy is ordered After the first cases. Thus, we can say the Stay at Home Policy do decrease the Total Cases inflected if it is ordered before the First Case occurred. 
+For these two box-plot diagrams, the Total Cases infected are higher if the Stay at Home Policy is ordered After the first cases. Thus, we can say the Stay at Home Policy does decrease the Total Cases infected if it is ordered before the First Case occurred. 
 
 
 ### Underlying Health Conditions
@@ -547,7 +548,7 @@ corrplot(disease2_corr,method="circle")
 ```
 
 
-This shows liver_total_death is highly correlated to deaths at correlation = 0.4338.
+This shows liver_total_death is highly correlated to number of deaths at correlation = 0.4338.
 
 ### Impact of Temperature
 
@@ -575,7 +576,7 @@ loadPkg("corrplot")
 corrplot(temp2_corr,method="circle")
 ```
 
-According to the correlation diagram, the temperature is less relate to total_cases and deaths. 
+According to the correlation diagram, the temperature is less related to total_cases and number of deaths. 
 
 ```{r}
 #sum(is.na(df2$TC))
@@ -594,7 +595,7 @@ corrplot.mixed(cor(race))
 ```
 
 
-The results show that the positive correlation coefficient between Asians and total cases is the largest, which is 0.19, indicating that there are more total cases where the proportion of Asians is high. Followed by Hispanics and blacks, but the correlation coefficients are very small. The correlation coefficient between non-Hispanic whites and TC is -0.1. the relationship between the number of deaths and race, and the results are consistent with the above results.
+The results show that the positive correlation coefficient between Asians and total cases is the largest, which is 0.19, indicating that there are more total cases where the proportion of Asians is high. Followed by Hispanics and Blacks, but the correlation coefficients are very small. The correlation coefficient between non-Hispanic whites and TC is -0.1. the relationship between the number of deaths and race, and the results are consistent with the above results.
 
 ### Are the total cases related to age?
 #### Are the total cases related to the proportion of people over 65?
@@ -628,7 +629,7 @@ It shows that the proportion of elderly people over 65 years old is different in
 ggplotly(ggplotly(ggplot(df2, aes(x=rank, y=young, fill=rank)) + geom_boxplot() + scale_fill_brewer(palette="Spectral") + ggtitle("proportion of youth under 18 vs. Total cases") + ylab("proportion of youth under 18") + xlab("Total cases") +  theme(plot.title= element_text(hjust=0.5, size = 14))))
 ```
 
-It is difficult to determine whether the two variable are related from the figure.
+It is difficult to determine whether the two variables are related from the figure.
 
 ```{r young bptest,echo=F}
 test2 <- bptest(df2$young~rank)
@@ -923,7 +924,7 @@ temp2_corr<-cor(temp2)
 corrplot(temp2_corr,method="circle")
 corrplot.mixed(cor(temp2))
 ```
-According to the correlation diagram, the temperature is less related to total_cases and deaths. However, it does relate to the variable, days. This means the higher the temperature in the city, the later the disease occurs in this city. For prediction, the second peak is coming as earlier as the weather turns from summer to winter which means the temperature goes down. As the temperature becomes colder, the second peak of the spread comes earlier. 
+According to the correlation diagram, the temperature is less related to total_cases and deaths. However, it does relate to the variable, days. This means the higher the temperature in the city, the later the disease occurs in this city. For prediction, the second peak is coming earlier as the weather turns from summer to winter, which means the temperature goes down. As the temperature becomes colder, the second peak of the spread comes earlier. 
 
 
 ## How reliable are your results?
@@ -1069,7 +1070,7 @@ biplot(pcr.fit, scale = 0)
 ```{r} 
 validationplot(pcr.fit ,val.type="MSEP",legend="topright")
 ```
-For the linear model with death related to disease, I added the total cases as the correlation of death and total cases are autocorrelate. By the Principle Component Method,  we draw the cross-validation line and compare the MSEP of the death to the significant disease. The number of components drops down when the number of components reach to two, which means the pc1 and pc2 can highly explain the model. This shows the reliability of the the model is sufficient.
+For the linear model with death related to disease, I added the total cases as the correlation of death and total cases are autocorrelated. By the Principle Component Method,  we draw the cross-validation line and compare the MSEP of the death to the significant disease. The number of components drops down when the number of components reach to two, which means the pc1 and pc2 can highly explain the model. This shows the reliability of the the model is sufficient.
 
 ## What additional information or analysis might improve your model results or work to control limitations?
 
@@ -1079,7 +1080,7 @@ In addition, the data is not perfect enough to predict death rate since it is ou
 
 # Conclusion
 
-After conducting our EDA analysis and models, we came to several conclusions on what factors could have an impact on the number of cases and death rate due to COVID-19. First, we found a significant relation of population density; the higher population density, the increased number of cases. This may be because more people may go out in crowded areas or take public transportation, which could lead to more exposure to the disease. Ethnicity also had an effect on the number of cases and death rates. Looking more closely into this variable, we saw that the top three races with an impact were Black, Asian, and Hispanic, which are all minority races. Minorities tend to have predisposed conditions that may lead to more exposure to the disease, thus increase the number of cases and deaths. Examples include social determinants of health and lack of access to care. Another factor was rural areas and confirmed cases. Those patients in these areas may have higher rates of a chronic disease that were not tested in this dataset that could have an association with getting COVID-19. People in rural areas also face social inequities and social determinants of health that could lead to an increased exposure to the disease. Age was also shown to have an impact on the number of cases. The younger generation may be going out more, not follow enforcement or mandate polices, and have a mindset they are invulnerable to the diease, which all lead to increased exposure to the diaease. A couple of other variables shown to have an impact on the number of cases were gender and liver-total-death. 
+After conducting our EDA analysis and models, we came to several conclusions on what factors could have an impact on the number of cases and death rate due to COVID-19. First, we found a significant relation of population density; the higher population density, the increased number of cases. This may be because more people may go out in crowded areas or take public transportation, which could lead to more exposure to the disease. Ethnicity also had an effect on the number of cases and death rates. Looking more closely into this variable, we saw that the top three races with an impact were Black, Asian, and Hispanic, which are all minority races. Minorities tend to have predisposed conditions that may lead to more exposure to the disease, thus increase the number of cases and deaths. Examples include social determinants of health and lack of access to care. Another factor was rural areas and confirmed cases. Those patients in these areas may have higher rates of a chronic disease that were not tested in this data set that could have an association with getting COVID-19. People in rural areas also face social inequities and social determinants of health that could lead to an increased exposure to the disease. Age was also shown to have an impact on the number of cases. The younger generation may be going out more, not follow enforcement or mandate polices, and/or have a mindset they are invulnerable to the diease, which all lead to increased exposure to the diaease. A couple of other variables shown to have an impact on the number of cases were gender and liver-total-death. 
 
 In the linear model, we found that the coefficient of % Severe Housing Problems and Sleep <7 Hours_Percent is positive, indicating that the less sleep time and housing problems there is in a region, the higher the mortality rate will be. Sleep time may affect health conditions, and good housing conditions can ensure that people can minimize exposure to the virus. 
 
