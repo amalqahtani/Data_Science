@@ -241,7 +241,7 @@ The Covid19 dataset has `r ncol(data)` columns and `r nrow(data)` rows/entries, 
 20. Stay At Home Order After First Case
 21. Percentage Living in Poverty
 22. Social Association Rate
-...
+
 47. % Sleep Hour < 7 
 48. % Sleep Hour < 7 Confidence Intervial low 
 49. % Sleep Hour < 7 Confidence Intervial high
