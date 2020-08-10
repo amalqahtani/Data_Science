@@ -734,6 +734,94 @@ We use the regsubsets function, exhaustive method, to find the best model from t
 Final model:
 death=-41.185+0.002 Population.Density + 0.0000006479 GDP + 1.051 SHP +1.509 sleep_hour + -1.230 poorhealth
 
+```{r,disease5,echo=F}
+loadPkg("corrplot")
+disease4<-data[,c(1,2,7,8,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72)]
+names(disease4)[5:30] <- c("sleep_hour","sleep_hour_low","sleep_hour_high","diabetes","diabetes_male","diabetes_female","heart_disease","Hypertension","obesity_age","Poor_health","Physical_Unhealthy","Mentally_unhealthy","Low_birthweight","smokers","adult_obesity","Food_environment","Physically_inactive","Exercise_opportunity","excessive_drink","Uninsured","Preventable_Hospital","Mammogram","Flu_vaccinated","Respiratory","liver_crude_mortality","liver_Total_death")
+#disease<-data[,c(1,2,7,8,47,50,53,55,60,61,65,71,72)]
+disease3<-disease4[ , -which(colnames(disease4) %in% c("Province","total_cases"))]
+disease3$sleep_hour<-as.numeric(as.character(disease3$sleep_hour))
+disease3$sleep_hour_low<-as.numeric(as.character(disease3$sleep_hour_low))
+disease3$sleep_hour_high<-as.numeric(as.character(disease3$sleep_hour_high))
+disease3$diabetes<-as.numeric(as.character(disease3$diabetes))
+disease3$diabetes_male<-as.numeric(as.character(disease3$diabetes_male))
+disease3$diabetes_female<-as.numeric(as.character(disease3$diabetes_female))
+disease3$heart_disease<-as.numeric(as.character(disease3$heart_disease))
+disease3$Hypertension<-as.numeric(as.character(disease3$Hypertension))
+disease3$obesity_age<-as.numeric(as.character(disease3$obesity_age))
+disease3$Poor_health<-as.numeric(as.character(disease3$Poor_health))
+disease3$Physical_Unhealthy<-as.numeric(as.character(disease3$Physical_Unhealthy))
+disease3$Mentally_unhealthy<-as.numeric(as.character(disease3$Mentally_unhealthy))
+disease3$Low_birthweight<-as.numeric(as.character(disease3$Low_birthweight))
+disease3$smokers<-as.numeric(as.character(disease3$smokers))
+disease3$adult_obesity<-as.numeric(as.character(disease3$adult_obesity))
+disease3$Food_environment<-as.numeric(as.character(disease3$Food_environment))
+disease3$Physically_inactive<-as.numeric(as.character(disease3$Physically_inactive))
+disease3$Exercise_opportunity<-as.numeric(as.character(disease3$Exercise_opportunity))
+disease3$excessive_drink<-as.numeric(as.character(disease3$excessive_drink))
+disease3$Uninsured<-as.numeric(as.character(disease3$Uninsured))
+disease3$Preventable_Hospital<-as.numeric(as.character(disease3$Preventable_Hospital))
+disease3$Mammogram<-as.numeric(as.character(disease3$Mammogram))
+disease3$Flu_vaccinated<-as.numeric(as.character(disease3$Flu_vaccinated))
+disease3$Respiratory<-as.numeric(as.character(disease3$Respiratory))
+disease3$liver_crude_mortality<-as.numeric(as.character(disease3$liver_crude_mortality))
+disease3$liver_Total_death<-as.numeric(as.character(disease3$liver_Total_death))
+disease3=disease3 %>% subset(deaths>0)
+disease3=disease3 %>% subset(sleep_hour_low>0)
+disease3=disease3 %>% subset(sleep_hour_high>0)
+disease3=disease3 %>% subset(Low_birthweight>0)
+disease3=disease3 %>% subset(Food_environment>0)
+#disease3=disease3 %>% subset(deaths>0)
+#disease2=disease2 %>% subset(total_cases>0)
+disease3=disease3 %>% subset(heart_disease>0)
+disease3=disease3 %>% subset(obesity_age>0)
+disease3=disease3 %>% subset(smokers>0)
+disease3=disease3 %>% subset(diabetes>0)
+disease3=disease3 %>% subset(sleep_hour>0)
+disease3=disease3 %>% subset(adult_obesity>0)
+disease3=disease3 %>% subset(excessive_drink>0)
+disease3=disease3 %>% subset(liver_crude_mortality>0)
+disease3=disease3 %>% subset(liver_Total_death>0)
+disease5<-disease3[ , -which(colnames(disease3) %in% c("State"))]
+disease5_corr<-cor(disease5)
+#str(disease2)
+#corrplot(disease5_corr, method="circle")
+```
+
+```{r,disease6,echo=F}
+#disease6<-disease5[ , -which(colnames(disease5) %in% c("total_cases"))]
+reg.leaps <- regsubsets(deaths~.,data=disease5, nbest = 1, method = "exhaustive")  # leaps, 
+plot(reg.leaps, scale = "bic", main = "BIC")
+plot(reg.leaps, scale = "adjr2", main = "Adjusted R^2")
+lm.dis5<-lm(deaths~sleep_hour+sleep_hour_high+Low_birthweight+heart_disease+adult_obesity+Food_environment+Respiratory+liver_Total_death,data = disease5)
+summary(lm.dis5)
+faraway::vif(lm.dis5)
+lm.dis4<-lm(deaths~sleep_hour+Low_birthweight+heart_disease+adult_obesity+Food_environment+Respiratory+liver_Total_death,data = disease5)
+summary(lm.dis4)
+faraway::vif(lm.dis4)
+disease_c<-disease5[1,2,8,14,16,17,25,27]
+```
+
+We use all variables to fit a linear model and select variables based on BIC and adjusted R-squared. The linear model we get contains variables: Sleep_hour, Sleep_hour_high, Heart_disease, Low_birthweight, adult_obesity, Food_enronment, Respiratory and liver_Total_death. In the above two models, all the p value of variables is less than 0.05, which is significant, but the VIF of skeep_hour_high and sleep_hour is too large and highly autocorrelated. So we remove sleep_hour_high and use the other variables to fit the third model.
+
+
+```{r,cp,echo=F}
+loadPkg("carData")
+loadPkg("car")
+layout(matrix(1:2, ncol = 2))
+## Adjusted R2
+#res.legend <-
+#    subsets(reg.leaps, statistic="adjr2", legend = FALSE, min.size = 3, main = "Adjusted R^2")
+## Mallow Cp
+res.legend <-
+    subsets(reg.leaps, statistic="cp", legend = FALSE, min.size=1, main = "Mallow Cp")
+abline(a = 1, b = 1, lty = 2)
+    subsets(reg.leaps, statistic="cp", legend = FALSE, min.size=6, main = "Mallow Cp")
+abline(a = 1, b = 1, lty = 2)
+```
+
+
+By the Mallo Cp diagorm, the left subset size is 1 and right subset size is 6. When variables reach to seven the Cp-value reach the lowest point around. And the variables are exactly the same as we selected above.
 
 ### LASSO Regression
 
