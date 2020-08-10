@@ -283,13 +283,12 @@ data_noNA = na.omit(small_df)
 
 ## How it was gathered ?
 
-This dataset was collected using publicly available data sources (Li et al., 2020). It includes COVID-19 confirmed case number and death number through April 14, 2020  which were obtained for each U.S. county from the Center for Systems Science and Engineering (CSSE) Coronavirus Resource Center at Johns Hopkins University. Race demographics for counties was obtained from the County Health Rankings and Roadmaps Program database. Daily temperature data for counties was obtained from the National Oceanic and Atmospheric Administration. County temperature was calculated using mean temperature for a period starting 10 days before the first confirmed county case and through the most current date (April 14, 2020). Unacast social distancing data was obtained through a research agreement with the company (Li et al., 2020). The following table shows the sources for each factor. 
+This data set was collected using publicly available data sources (Li et al., 2020). It includes COVID-19 confirmed case and death numbers through April 14, 2020  which were obtained for each U.S. county from the Center for Systems Science and Engineering (CSSE) Coronavirus Resource Center at Johns Hopkins University. Race demographics for counties was obtained from the County Health Rankings and Roadmaps Program database. Daily temperature data for counties was obtained from the National Oceanic and Atmospheric Administration. County temperature was calculated using mean temperature for a period starting 10 days before the first confirmed county case and through the most current date (April 14, 2020). Unacast social distancing data was obtained through a research agreement with the company (Li et al., 2020). The following table shows the sources for each factor. 
 
 
 
 ## What are the limitations of the dataset?
-There are many limitations to this dataset. In fact, this dataset does not represent the entire States of the US since it only includes only the counties with sufficient data. Hence, many counties were excluded from analysis for lack of Covid-19 cases or lack of Covid-19 deaths. 
-Another limitation is that the COVID-19 pandemic is still in progress and the last date that the dataset was collected was April 14, 2020. This means that the data of all included counties in this dataset is at different stages which may not reflect the ultimate case and death tolls in these counties. 
+There are many limitations to this data set. In fact, this data set does not represent the entire States of the US since it only includes the counties with sufficient data. Hence, many counties were excluded from the analysis for lack of COVID-19 cases or lack of COVID-19 deaths. Another limitation is that the COVID-19 pandemic is still in progress and the last date that the data set was collected was April 14, 2020. This means that the data of all included counties in this data set is at different stages which may not reflect the ultimate case and death tolls in these counties. 
 
 
 ## What analysis has already been completed related to the content in your dataset? 
